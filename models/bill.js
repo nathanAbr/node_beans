@@ -72,6 +72,6 @@ billsSchema = new mongoose.Schema({
     recovery_date: Date
 })
 
-const billsModel = mongoose.model('bill', billsSchema);
+const billsModel = mongoose.model('bills', billsSchema);
 
 module.exports = billsModel;

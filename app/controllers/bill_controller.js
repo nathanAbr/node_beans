@@ -7,9 +7,13 @@ function Controller(){}
 
 function listInBill(req, res) {
     if(typeof req.get("year") !== 'undefined' && req.get("year") !== "" && req.get("year") !== null){
-        res.render('bills_view', {bills:services.listInBill(req.get("year"))});
+        services.listInBill(req.get("year"), (bills)=>{
+            res.render('bills_view', {bills:bills});
+        });
     } else {
-        res.render('bills_view', {bills:services.listInBill(currentYear)});
+        services.listInBill(currentYear, (bills)=>{
+            res.render('bills_view', {bills:bills});
+        });
     }
 }
 
