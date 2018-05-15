@@ -5,12 +5,14 @@ let currentYear = currentDate.getFullYear();
 
 function Controller(){}
 
-Controller.prototype.listInBill = (year = currentYear) => {
-    if(Number.isInteger(year)){
-        return services.listInBill(year);
+function listInBill(req, res) {
+    if(typeof req.get("year") !== 'undefined' && req.get("year") !== "" && req.get("year") !== null){
+        res.render('bills_view', {bills:services.listInBill(req.get("year"))});
     } else {
-        return null;
+        res.render('bills_view', {bills:services.listInBill(currentYear)});
     }
 }
 
-module.exports = Controller;
+module.exports = {
+    listInBill: listInBill,
+};
