@@ -1,15 +1,11 @@
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-const billService = require('../services/bill_service');
-
+const services = require('../services/bill_service');
 const ErrorHandler = require('../error_management');
-let errorHandler = new ErrorHandler();
 
-function Controller(){};
+let errorHandler = new ErrorHandler();
+let currentDate = new Date();
+let currentYear = currentDate.getFullYear();
+
+function Controller(){}
 
 Controller.prototype.addBill = (req, res, next) => {
     var val = verifyValues(req);
@@ -28,6 +24,14 @@ Controller.prototype.updateBill = (req, res, next) => {
     }
     else {
         console.log(val);
+    }
+};
+
+Controller.prototype.listInBill = (year = currentYear) => {
+    if(Number.isInteger(year)){
+        return services.listInBill(year);
+    } else {
+        return null;
     }
 };
 
