@@ -70,7 +70,7 @@ function verifyValues(req) {
         return errorHandler.typeError('bill service date', 'object');
     }
     
-    if(typeof req.body.billing_date !== 'object') {
+    if(typeof req.body.billing_date !== 'string') {
         return errorHandler.typeError('bill date', 'object');
     }
     
@@ -78,7 +78,7 @@ function verifyValues(req) {
         return errorHandler.valueError('bill date');
     }
     
-    if(typeof req.body.payment_date !== 'object') {
+    if(typeof req.body.payment_date !== 'string') {
         return errorHandler.typeError('bill payment date', 'object');
     }
     
@@ -86,7 +86,7 @@ function verifyValues(req) {
         return errorHandler.valueError('bill payment date');
     }
     
-    if(typeof req.body.recovery_date !== 'object') {
+    if(typeof req.body.recovery_date !== 'string') {
         return errorHandler.typeError('bill reflation date', 'object');
     }
     
