@@ -6,13 +6,13 @@ function listInBill(year) {
     return Bill.find({date_prestation:{"$gte":new Date(year, 1, 1), "$lte":new Date(year, 12, 30)}});
 }
 // Create a bill
-Service.prototype.add = (req,res) => {
-    console.log(req.body);
+function add(req,res){
     let bill = new Bill(req.body);
 	bill.save().then((doc)=>{res.send(doc);});
 }
 
 module.exports = {
     listInBill: listInBill,
+    add : add
 };
 

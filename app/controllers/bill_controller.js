@@ -18,7 +18,10 @@ function listInBill(req, res) {
 }
 
 function add(req, res) {
+    console.log("BODY : "+req.body);
+    services.add(req.body);
     res.send("Bill is add in database !");
+   
 }
 
 //module.exports = Controller;
