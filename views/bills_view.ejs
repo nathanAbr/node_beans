@@ -1,8 +1,31 @@
 <%- include partials/head.ejs %>
 <%- include partials/header.ejs %>
 
-<ul>
-    <% for(bill of bills) { %><li><%= bill.designation %></li><% } %>
-</ul>
+<table class="table table-hover table-dark">
+    <thead class="thead-light">
+    <tr>
+        <th scope="col">#</th>
+        <th scope="col">Désignation</th>
+        <th scope="col">Montant</th>
+        <th scope="col">Date de prestation</th>
+        <th scope="col">Date de règlement</th>
+        <th scope="col">Date de relance</th>
+        <th scope="col">Contact</th>
+    </tr>
+    </thead>
+    <tbody>
+    <% bills.forEach((bill, key) => { %>
+    <tr>
+        <td><%= key %></td>
+        <td><%= bill.designation %></td>
+        <td><%= bill.amount %> €</td>
+        <td><% if(typeof bill.action_date !== 'undefined'){ %><%= bill.action_date.getDate() %>/<% if(bill.action_date.getMonth() + 1  < 10){ %>0<%}%><%= bill.action_date.getMonth() + 1 %>/<%= bill.action_date.getFullYear() %><% } %></td>
+        <td><% if(typeof bill.payment_date !== 'undefined'){ %><%= bill.payment_date.getDate() %>/<% if(bill.payment_date.getMonth() + 1  < 10){ %>0<%}%><%= bill.payment_date.getMonth() + 1 %>/<%= bill.payment_date.getFullYear() %><% } %></td>
+        <td><% if(typeof bill.recovery_date !== 'undefined'){ %><%= bill.recovery_date.getDate() %>/<% if(bill.recovery_date.getMonth() + 1  < 10){ %>0<%}%><%= bill.recovery_date.getMonth() + 1 %>/<%= bill.recovery_date.getFullYear() %><% } %></td>
+        <td>Voir</td>
+    </tr>
+    <% }); %>
+    </tbody>
+</table>
 
 <%- include partials/footer.ejs %>
