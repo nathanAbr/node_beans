@@ -13,4 +13,11 @@ Controller.prototype.listInBill = (year = currentYear) => {
     }
 }
 
-module.exports = Controller;
+function add(req, res) {
+    res.send("Bill is add in database !");
+}
+
+//module.exports = Controller;
+module.exports = {
+    add: add
+};
