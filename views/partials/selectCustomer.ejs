@@ -1,0 +1,5 @@
+<select><% for(i in customers) { %>
+	<option value="<%= customers[i]._id %>">
+		<%= customers[i].name %>
+	</option>
+<% } %></select>
