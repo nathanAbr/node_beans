@@ -1,4 +1,6 @@
 const services = require('../services/bill_service');
+const customerService = require('../services/customer_service');
+const providerService = require('../services/provider_service');
 const errorHandler = require('../error_management');
 
 let currentDate = new Date();
@@ -48,10 +50,33 @@ function listOutBill(req, res) {
 
 /*
     montre le formulaire d'ajout d'une facture
+    
+    var query = Band.findOne({name: "Guns N' Roses"});
+    assert.ok(!(query instanceof Promise));
+
+    // A query is not a fully-fledged promise, but it does have a `.then()`.
+    query.then(function (doc) {
+      // use doc
+    });
+
+    // `.exec()` gives you a fully-fledged promise
+    var promise = query.exec();
+    assert.ok(promise instanceof Promise);
+
+    promise.then(function (doc) {
+      // use doc
+    });
 */
 function addBill(req,res){
-    //services.addBill
-    res.render('bill_add',{customers: customers, providers: providers, title:'Ajout d\'une facture'});
+    providerService.providerSelect().exec((providers)=>{
+        customerService.customerSelect().exec( (customers)=>{
+            res.render('bill_add',{customers: customers, providers: providers, title:'Ajout d\'une facture'});
+        })
+    });        
+    //    console.log('providers: '+providers);
+        
+      //      console.log('customers: '+customers);
+             /*res.render('bill_add',{customers: customers, providers: providers, title:'Ajout d\'une facture'})*/
 }
 
 function processAddBill(req, res) {    
@@ -69,6 +94,7 @@ function processAddBill(req, res) {
     
 module.exports = {
     listInBill: listInBill,
+    addBill: addBill,
     processAddBill: processAddBill,
     listOutBill: listOutBill,
     updateBill: updateBill,
