@@ -21,17 +21,14 @@ function listOutBill(year) {
     }).populate("provider");
 }
 // Create a bill
-function add(params,res){
+function addBill(params){
     let bill = new Bill(params);
-	bill.save().then((err,doc)=>{
-        if (err) return console.log(err);
-        res.send(doc);
-    });
+	return bill.save();
 }
 
 module.exports = {
     listInBill: listInBill,
-    add : add,
+    addBill : addBill,
     listOutBill: listOutBill,
 };
 
