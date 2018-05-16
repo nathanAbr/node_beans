@@ -20,18 +20,22 @@ function addBill(req, res) {
 function updateBill(req) {
     var val = verifyValues(req);
     if(!val) {
-        services.updateBill(req, res);
+        services.updateBill(req);
     }
     else {
         console.log(val);
     }
 };
 
-Controller.prototype.listInBill = (year = currentYear) => {
-    if(Number.isInteger(year)){
-        return services.listInBill(year);
+function listInBill(req, res) {
+    if(typeof req.get("year") !== 'undefined' && req.get("year") !== "" && req.get("year") !== null){
+        services.listInBill(req.get("year")).then((bills)=>{
+            res.render('bills_view', {bills:bills});
+        });
     } else {
-        return null;
+        services.listInBill(currentYear).then((bills)=>{
+            res.render('bills_view', {bills:bills});
+        });
     }
 };
 
@@ -90,5 +94,6 @@ function verifyValues(req) {
 
 module.exports = {
     addBill : addBill,
-    updateBill : updateBill
+    updateBill : updateBill,
+    listInBill: listInBill
 };

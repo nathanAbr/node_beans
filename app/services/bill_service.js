@@ -10,7 +10,7 @@ Service.prototype.addBill = (req, res) => {
     });
 };
 
-Service.prototype.updateBill = (req, res) => {
+Service.prototype.updateBill = (req) => {
     Bill.findByIdAndUpdate(
         req.body.id, { 
             $set: { 
@@ -42,5 +42,13 @@ Service.prototype.listInBill = (year) => {
     return result;
 };
 
-module.exports = Service;
+function listInBill(year) {
+    console.log(new Date(year, 1, 1));
+    console.log(new Date(year, 12, 31));
+    return Bill.find({date_prestation:{"$gte":new Date(year, 1, 1), "$lte":new Date(year, 12, 30)}});
+}
+
+module.exports = {
+    listInBill: listInBill,
+};
 

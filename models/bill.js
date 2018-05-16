@@ -1,46 +1,47 @@
 const mongoose = require('mongoose');
 
 /*
-{ customer:'ObjectId...',
-  type: 'Dev',
-  designation: 'Renfort Node js avril',
-  amount: 1800,
-  vat: 20,
-  action_date: new Date('04.30.2018'),
-  billing_date: new Date('05.01.2018')
+[{ "customer":"ObjectId...",
+  "type": "Dev",
+  "designation": "Renfort Node js avril",
+  "amount": 1800,
+  "vat": 20,
+  "action_date": "04.30.2018",
+  "billing_date": "05.01.2018"
 },
-{ customer:'ObjectId...',
-  type: 'Formation',
-  designation: 'Mongo mai',
-  amount: 1800,
-  action_date: new Date('18.05.2018')
+{ 
+  "customer":"ObjectId...",
+  "type": "Formation",
+  "designation": "Mongo mai",
+  "amount": 1800,
+  "action_date": "18.05.2018"
 },
-{ customer:'ObjectId...',
-  type: 'Dev',
-  designation: 'Appli Livraisons Mars',
-  amount: 1432,
-  vat: 20,
-  action_date: new Date('04.01.2018'),
-  billing_date: new Date('04.03.2018'),
-  payment_date: new Date('05.02.2018')
+{ "customer":"ObjectId...",
+  "type": "Dev",
+  "designation": "Appli Livraisons Mars",
+  "amount": 1432,
+  "vat": 20,
+  "action_date": "04.01.2018",
+  "billing_date": "04.03.2018",
+  "payment_date": "05.02.2018"
 },
-{ customer:'ObjectId...',
-  type: 'Formation',
-  designation: 'JavaScript POE 22',
-  amount: 1800,
-  action_date: new Date('03.02.2018')
-  billing_date: new Date('03.03.2018')
-  recovery_date: new Date('04.03.2018')
-  payment_date: new Date('05.12.2018')
+{ "customer":"ObjectId...",
+  "type": "Formation",
+  "designation": "JavaScript POE 22",
+  "amount": 1800,
+  "action_date": "03.02.2018",
+  "billing_date": "03.03.2018",
+  "recovery_date": "04.03.2018",
+  "payment_date": "05.12.2018"
 },
-{ customer:'ObjectId...',
-  type: 'Formation',
-  designation: 'JavaScript POE 21',
-  amount: 1800,
-  action_date: new Date('03.02.2018')
-  billing_date: new Date('03.03.2018')
-  recovery_date:new Date('04.03.2018')
-}
+{ "customer":"ObjectId...",
+  "type": "Formation",
+  "designation": "JavaScript POE 21",
+  "amount": 1800,
+  "action_date": "03.02.2018",
+  "billing_date": "03.03.2018",
+  "recovery_date":"04.03.2018"
+}]
 
 */
 
@@ -72,6 +73,6 @@ billsSchema = new mongoose.Schema({
     recovery_date: Date
 })
 
-const billsModel = mongoose.model('bill', billsSchema);
+const billsModel = mongoose.model('bills', billsSchema);
 
 module.exports = billsModel;

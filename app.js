@@ -3,6 +3,8 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var mongoose = require('mongoose');
+mongoose.set('debug', true);
 
 var app = express();
 
@@ -33,5 +35,12 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
+mongoose.connect('mongodb://uhdnh2o2ysurwl9:LXmXXxCcHMdjFOy6iL0s@boyyrjxzxp7ntmj-mongodb.services.clever-cloud.com:27017/boyyrjxzxp7ntmj');
+mongoose.connection
+    .on('error', console.error.bind(console, 'connection error:'))
+    .once('open', function() {
+        console.log("we're connected! ")
+    });
 
 module.exports = app;
