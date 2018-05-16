@@ -56,6 +56,7 @@ const mongoose = require('mongoose');
 
 billsSchema = new mongoose.Schema({
     customer: {type: mongoose.Schema.ObjectId, ref:'customer'},
+    provider: {type: mongoose.Schema.ObjectId, ref:'provider'},
     type: {type:String, enum: ['Formation', 'Dev']},
     designation: String,
     amount: {type: Number, min:[0,'Cant be neg!']},

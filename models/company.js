@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const contactModel = require('../models/contact').contact;
 
 /*
 {
