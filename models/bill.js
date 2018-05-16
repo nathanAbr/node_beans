@@ -1,7 +1,16 @@
 const mongoose = require('mongoose');
 
 /*
-[{ "customer":"ObjectId...",
+[
+{ "customer":"5afbd9f638f6fda42860516b",
+  "type": "Dev",
+  "designation": "Last year",
+  "amount": 1100,
+  "vat": 20,
+  "action_date": "04.30.2017",
+  "billing_date": "05.01.2018"
+},
+{ "customer":"ObjectId...",
   "type": "Dev",
   "designation": "Renfort Node js avril",
   "amount": 1800,
@@ -47,6 +56,7 @@ const mongoose = require('mongoose');
 
 billsSchema = new mongoose.Schema({
     customer: {type: mongoose.Schema.ObjectId, ref:'customer'},
+    provider: {type: mongoose.Schema.ObjectId, ref:'provider'},
     type: {type:String, enum: ['Formation', 'Dev']},
     designation: String,
     amount: {type: Number, min:[0,'Cant be neg!']},
