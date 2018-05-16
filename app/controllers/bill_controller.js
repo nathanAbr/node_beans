@@ -3,6 +3,8 @@ const services = require('../services/bill_service');
 let currentDate = new Date();
 let currentYear = currentDate.getFullYear();
 
+const injector = require('../../injector');
+
 function Controller(){}
 
 function listInBill(req, res) {
@@ -23,12 +25,12 @@ function listOutBill(req, res) {
     if(typeof req.get("year") !== 'undefined' && req.get("year") !== "" && req.get("year") !== null){
         services.listOutBill(req.get("year")).then((bills)=>{
             console.log(bills);
-            res.render('bills_view', {bills:bills});
+            injector.injectHTML(res, 'bills', {bills:bills});
         });
     } else {
         services.listOutBill(currentYear).then((bills)=>{
             console.log(bills);
-            res.render('bills_view', {bills:bills});
+            injector.injectHTML(res, 'bills', {bills:bills});
         });
     }
 }
