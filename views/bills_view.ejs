@@ -1,7 +1,8 @@
-<% include('./partials/head') %>
+<%- include partials/head.ejs %>
+<%- include partials/header.ejs %>
 
 <ul>
-    <% bills.forEach(function(bill) { %><li><%= bill.designation %></li><% }); %>
+    <% for(bill of bills) { %><li><%= bill.designation %></li><% } %>
 </ul>
 
-<% include('./partials/footer') %>
+<%- include partials/footer.ejs %>
