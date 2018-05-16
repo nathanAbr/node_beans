@@ -8,6 +8,6 @@ let billController = require('./controllers/bill_controller');
 router.get('/', mainController.home);
 router.get('/bills', billController.listInBill);
 router.post('/add_bill', billController.addBill);
-router.put('/update_bill', billController.update_bill);
+router.put('/update_bill', billController.updateBill);
 
 module.exports = router;

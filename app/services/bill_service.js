@@ -1,16 +1,14 @@
 let Bill =  require('../../models/bill');
 
-function Service(){}
-
-Service.prototype.addBill = (req, res) => {
+function addBill(req, res) {
     let bill = new Bill(req.body);
     bill.save().then(
             (doc) => {
                 res.send(doc);
     });
-};
+}
 
-Service.prototype.updateBill = (req) => {
+function updateBill(req, res) {
     Bill.findByIdAndUpdate(
         req.body.id, { 
             $set: { 
@@ -30,17 +28,7 @@ Service.prototype.updateBill = (req) => {
 	  if (err) return console.log(err);
 	  res.send(doc);
     }
-);};
-
-Service.prototype.listInBill = (year) => {
-    let result = null;
-    Bill.find({
-        date_prestation: {"$gte":new Date(year, 1, 1)}
-    }).then((data) => {
-        result = data;
-    });
-    return result;
-};
+);}
 
 function listInBill(year) {
     console.log(new Date(year, 1, 1));
@@ -50,5 +38,7 @@ function listInBill(year) {
 
 module.exports = {
     listInBill: listInBill,
+    addBill : addBill,
+    updateBill : updateBill
 };
 

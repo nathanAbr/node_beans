@@ -4,8 +4,6 @@ const errorHandler = require('../error_management');
 let currentDate = new Date();
 let currentYear = currentDate.getFullYear();
 
-function Controller(){}
-
 function addBill(req, res) {
     var val = verifyValues(req);
     if(!val) {
@@ -15,17 +13,18 @@ function addBill(req, res) {
     else {
         console.log(val);
     }
-};
+}
 
-function updateBill(req) {
+function updateBill(req, res) {
     var val = verifyValues(req);
     if(!val) {
-        services.updateBill(req);
+        services.updateBill(req, res);
+        console.log('update bill');
     }
     else {
         console.log(val);
     }
-};
+}
 
 function listInBill(req, res) {
     if(typeof req.get("year") !== 'undefined' && req.get("year") !== "" && req.get("year") !== null){
@@ -37,7 +36,7 @@ function listInBill(req, res) {
             res.render('bills_view', {bills:bills});
         });
     }
-};
+}
 
 function verifyValues(req) {
     
@@ -93,7 +92,7 @@ function verifyValues(req) {
 }
 
 module.exports = {
-    addBill : addBill,
-    updateBill : updateBill,
     listInBill: listInBill
+    , addBill: addBill
+    , updateBill: updateBill
 };
