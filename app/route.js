@@ -7,5 +7,8 @@ let billController = require('./controllers/bill_controller');
 router.get('/', mainController.home);
 router.post('/bill',billController.add);
 
+//Bill Controller
+router.get('/bills', billController.listInBill);
+
 module.exports = router;
 
