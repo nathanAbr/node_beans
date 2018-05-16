@@ -1,0 +1,7 @@
+<% include('./partials/head') %>
+
+<ul>
+    <% bills.forEach(function(bill) { %><li><%= bill.designation %></li><% }); %>
+</ul>
+
+<% include('./partials/footer') %>

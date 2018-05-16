@@ -7,18 +7,18 @@ function listInBill(year) {
     firstDate = new Date(year, 0, 1);
     lastDate = new Date(year, 11, 31);
     return Bill.find({
-        "customer":{$exists:true},
-        "provider":{$exists:false}
-    }).populate("customer");
+        "customer":{$exists:false},
+        "provider":{$exists:true}
+    }).populate("provider");
 }
 
 function listOutBill(year) {
     firstDate = new Date(year, 0, 1);
     lastDate = new Date(year, 11, 31);
     return Bill.find({
-        "provider":{$exists:true},
-        "customer":{$exists:false}
-    }).populate("provider");
+        "provider":{$exists:false},
+        "customer":{$exists:true}
+    }).populate("customer");
 }
 // Create a bill
 function addBill(params){
