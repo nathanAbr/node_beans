@@ -8,7 +8,8 @@ router.get('/', mainController.home);
 router.post('/bill',billController.add);
 
 //Bill Controller
-router.get('/bills', billController.listInBill);
+router.get('/bills/in', billController.listInBill);
+router.get('/bills/out', billController.listOutBill);
 
 module.exports = router;
 

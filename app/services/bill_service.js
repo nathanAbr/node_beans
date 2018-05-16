@@ -1,9 +1,24 @@
-let Bill =  require('../../models/bill');
+const Bill =  require('../../models/bill'),
+    Customer = require('../../models/company').customerModel,
+    Provider = require('../../models/company').providerModel;
+
 
 function listInBill(year) {
-    console.log(new Date(year, 1, 1));
-    console.log(new Date(year, 12, 31));
-    return Bill.find({date_prestation:{"$gte":new Date(year, 1, 1), "$lte":new Date(year, 12, 30)}});
+    firstDate = new Date(year, 0, 1);
+    lastDate = new Date(year, 11, 31);
+    return Bill.find({
+        "customer":{$exists:true},
+        "provider":{$exists:false}
+    }).populate("customer");
+}
+
+function listOutBill(year) {
+    firstDate = new Date(year, 0, 1);
+    lastDate = new Date(year, 11, 31);
+    return Bill.find({
+        "provider":{$exists:true},
+        "customer":{$exists:false}
+    }).populate("provider");
 }
 // Create a bill
 function add(req,res){
@@ -13,6 +28,7 @@ function add(req,res){
 
 module.exports = {
     listInBill: listInBill,
-    add : add
+    add : add,
+    listOutBill: listOutBill,
 };
 
