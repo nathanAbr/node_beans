@@ -1,59 +1,5 @@
 const mongoose = require('mongoose');
 
-/*
-[
-{ "customer":"5afbd9f638f6fda42860516b",
-  "type": "Dev",
-  "designation": "Last year",
-  "amount": 1100,
-  "vat": 20,
-  "action_date": "04.30.2017",
-  "billing_date": "05.01.2018"
-},
-{ "customer":"ObjectId...",
-  "type": "Dev",
-  "designation": "Renfort Node js avril",
-  "amount": 1800,
-  "vat": 20,
-  "action_date": "04.30.2018",
-  "billing_date": "05.01.2018"
-},
-{ 
-  "customer":"ObjectId...",
-  "type": "Formation",
-  "designation": "Mongo mai",
-  "amount": 1800,
-  "action_date": "18.05.2018"
-},
-{ "customer":"ObjectId...",
-  "type": "Dev",
-  "designation": "Appli Livraisons Mars",
-  "amount": 1432,
-  "vat": 20,
-  "action_date": "04.01.2018",
-  "billing_date": "04.03.2018",
-  "payment_date": "05.02.2018"
-},
-{ "customer":"ObjectId...",
-  "type": "Formation",
-  "designation": "JavaScript POE 22",
-  "amount": 1800,
-  "action_date": "03.02.2018",
-  "billing_date": "03.03.2018",
-  "recovery_date": "04.03.2018",
-  "payment_date": "05.12.2018"
-},
-{ "customer":"ObjectId...",
-  "type": "Formation",
-  "designation": "JavaScript POE 21",
-  "amount": 1800,
-  "action_date": "03.02.2018",
-  "billing_date": "03.03.2018",
-  "recovery_date":"04.03.2018"
-}]
-
-*/
-
 billsSchema = new mongoose.Schema({
     customer: {type: mongoose.Schema.ObjectId, ref:'customer'},
     provider: {type: mongoose.Schema.ObjectId, ref:'provider'},
@@ -66,7 +12,7 @@ billsSchema = new mongoose.Schema({
         type: Date,
         validate: {
             validator: function(v) {
-                return (v >= this.date_prestation || v == null)
+                return (v >= this.action_date || v == null)
             },
             message: 'La facture ne peut précéder la prestation...'
         }
@@ -75,7 +21,7 @@ billsSchema = new mongoose.Schema({
         type: Date,
         validate: {
             validator: function(v) {
-                return (v >= this.date_facture || v == null)
+                return (v >= this.billing_date || v == null)
             },
             message: 'Le réglement ne peut précéder la facture...'
         }

@@ -31,7 +31,21 @@ function listOutBill(req, res) {
     }
 }
 
+function addBill(req, res) {    
+    let params = req.body;
+    if (params.action_date) params.action_date = new Date(params.action_date);
+    if (params.billing_date) params.billing_date = new Date(params.billing_date);
+    if (params.recovery_date) params.recovery_date = new Date(params.recovery_date);
+    if (params.payment_date) params.payment_date = new Date(params.payment_date); 
+    
+    services.addBill(params).then((err,bill)=>{
+        if (err) return res.send(err);
+        console.log(bill); 
+        res.render('bills_view',{bills:bill})});
+}
+    
 module.exports = {
     listInBill: listInBill,
+    addBill: addBill,
     listOutBill: listOutBill,
 };

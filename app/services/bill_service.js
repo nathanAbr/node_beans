@@ -20,9 +20,15 @@ function listOutBill(year) {
         "customer":{$exists:true}
     }).populate("customer");
 }
+// Create a bill
+function addBill(params){
+    let bill = new Bill(params);
+	return bill.save();
+}
 
 module.exports = {
     listInBill: listInBill,
+    addBill : addBill,
     listOutBill: listOutBill,
 };
 
