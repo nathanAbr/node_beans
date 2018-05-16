@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const contactSchema = require('../models/contact');
+const contactModel = require('../models/contact').contact;
 
 /*
 {
@@ -20,7 +20,25 @@ companySchema = new mongoose.Schema({
         city:String,
         country:String
     },
-    contacts:[contactSchema]
+    contacts:[{
+    name: String,
+    mail: {
+        type: String,
+        trim: true,
+        lowercase: true,
+        unique: false,
+        validate: {
+            validator(v){
+                return /^((([^<>()[\]\.,;:s@\"]+(.[^<>()[\]\.,;:s@\"']+)*))@((([a-zA-Z-0-9]+.)+[a-zA-Z]{2,}))(;(([^<>()[\]\.,;:s@\"]+(.[^<>()[\]\.,;:s@\"']+)*))@((([a-zA-Z-0-9]+.)+[a-zA-Z]{2,})))*|)$/i.test(v);
+            },
+            message: 'a mail format is required!'
+        }
+    },
+    comments: [String],
+    tel: {type: String,  maxlength: 10 },
+    mobile: {type: String,  maxlength: 10}
+}],
+    comments:[String]
 })
 const customerModel = mongoose.model('customer', companySchema);
 const providerModel = mongoose.model('provider', companySchema);
