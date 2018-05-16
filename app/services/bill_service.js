@@ -21,9 +21,12 @@ function listOutBill(year) {
     }).populate("provider");
 }
 // Create a bill
-function add(req,res){
-    let bill = new Bill(req.body);
-	bill.save().then((doc)=>{res.send(doc);});
+function add(params,res){
+    let bill = new Bill(params);
+	bill.save().then((err,doc)=>{
+        if (err) return console.log(err);
+        res.send(doc);
+    });
 }
 
 module.exports = {
