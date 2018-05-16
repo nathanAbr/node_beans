@@ -46,14 +46,22 @@ function listOutBill(req, res) {
     }
 }
 
-function addBill(req, res) {    
+/*
+    montre le formulaire d'ajout d'une facture
+*/
+function addBill(req,res){
+    //services.addBill
+    res.render('bill_add',{customers: customers, providers: providers, title:'Ajout d\'une facture'})});
+}
+
+function processAddBill(req, res) {    
     let params = req.body;
     if (params.action_date) params.action_date = new Date(params.action_date);
     if (params.billing_date) params.billing_date = new Date(params.billing_date);
     if (params.recovery_date) params.recovery_date = new Date(params.recovery_date);
     if (params.payment_date) params.payment_date = new Date(params.payment_date); 
     
-    services.addBill(params).then((err,bill)=>{
+    services.processAddBill(params).then((err,bill)=>{
         if (err) return res.send(err);
         console.log(bill); 
         res.render('bills_view',{bills:bill})});
@@ -61,10 +69,9 @@ function addBill(req, res) {
     
 module.exports = {
     listInBill: listInBill,
-    addBill: addBill,
+    processAddBill: processAddBill,
     listOutBill: listOutBill,
     updateBill: updateBill,
-
 };
     
 function verifyValues(req) {
