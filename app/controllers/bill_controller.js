@@ -68,8 +68,9 @@ function listOutBill(req, res) {
     });
 */
 function addBill(req,res){
-    providerService.providerSelect().exec((providers)=>{
-        customerService.customerSelect().exec( (customers)=>{
+    providerService.providerSelect().exec().then((providers)=>{
+        customerService.customerSelect().exec().then( (customers)=>{
+            console.log('providers: '+providers+'; customers: '+customers);
             res.render('bill_add',{customers: customers, providers: providers, title:'Ajout d\'une facture'});
         })
     });        
@@ -97,8 +98,7 @@ module.exports = {
     addBill: addBill,
     processAddBill: processAddBill,
     listOutBill: listOutBill,
-    updateBill: updateBill,
-    addBill: addBill,
+    updateBill: updateBill
 };
     
 function verifyValues(req) {
