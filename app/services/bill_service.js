@@ -1,16 +1,14 @@
 let Bill =  require('../../models/bill');
 
-function Service(){}
-
-Service.prototype.listInBill = (year) => {
-    let result = null;
+function listInBill(year) {
     Bill.find({
-        date_prestation: {"$gte":new Date(year, 1, 1)}
     }).then((data) => {
-        result = data;
+        console.log('listing bills: '+data);
+        return data;
     });
-    return result;
 }
 
-module.exports = Service;
+module.exports = {
+    listInBill: listInBill,
+};
 
