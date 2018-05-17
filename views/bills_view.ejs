@@ -83,7 +83,7 @@
 </div>
 
 <script>
-
+    let company = null;
     const fields = [
         {
             "type": "input",
@@ -118,6 +118,7 @@
 
     function callback(data){
         if(typeof data !== 'undefined' && data !== null) {
+            company = data;
             document.getElementById('modalLabel').innerHTML = setUndefined(data.name);
             document.getElementById('address').innerHTML = setUndefined(data.address.road);
             document.getElementById('cp').innerHTML = setUndefined(data.address.zip);
@@ -130,7 +131,7 @@
                         "<tbody><tr>" +
                         "<td>" + setUndefined(contact.name) + "</td>" +
                         "<td>" + setUndefined(contact.tel) + "</td>" +
-                        "<td>" + setUndefined(contact.mobile) + "</td>" +
+                        "<td>" + setUndefined(contact.port) + "</td>" +
                         "<td>" + setUndefined(contact.mail) + "</td>" +
                         "<td>" + setUndefined(contact.comments) + "</td>" +
                         "<td>...</td>" +
@@ -181,8 +182,16 @@
     }
 
     function addContact(){
-        let data = new FormData(document.getElementById('addContact'));
-        console.log(data);
+        let data = $('#addContact').serializeArray();
+        let contact = {
+            name: data[0].value,
+            tel: data[1].value,
+            port: data[2].value,
+            mail: data[3].value,
+            comments: data[4].value,
+        };
+        company.contacts.push(contact);
+        console.log(company);
     }
 </script>
 
