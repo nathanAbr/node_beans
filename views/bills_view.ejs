@@ -49,6 +49,16 @@
                 </button>
             </div>
             <div class="modal-body" id="contact">
+                <div class="d-flex flex-row">
+                    <div class="mr-auto p-5" style="padding: 10px;">
+                        <p id="address"></p>
+                        <p id="cp"></p>
+                        <p id="city"></p>
+                    </div>
+                    <div class="p-5 align-self-stretch" style="padding: 10px;">
+                        <p id="country"></p>
+                    </div>
+                </div>
                 <table class="table table-hover table-dark">
                     <thead class="thead-light">
                         <th scope="col">Nom</th>
@@ -56,11 +66,13 @@
                         <th scope="col">Mobile</th>
                         <th scope="col">Mail</th>
                         <th scope="col">Commentaires</th>
+                        <th scope="col">Action</th>
                     </thead>
                     <tbody id="billContacts">
 
                     </tbody>
                 </table>
+                <button type="button" class="btn btn-success">Ajouter un contact</button>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -75,8 +87,12 @@
     }
 
     function callback(data){
-        document.getElementById('modalLabel').innerHTML = data.name;
         if(typeof data !== 'undefined' && data !== null) {
+            document.getElementById('modalLabel').innerHTML = setUndefined(data.name);
+            document.getElementById('address').innerHTML = setUndefined(data.address.road);
+            document.getElementById('cp').innerHTML = setUndefined(data.address.zip);
+            document.getElementById('city').innerHTML = setUndefined(data.address.city);
+            document.getElementById('country').innerHTML = setUndefined(data.address.country);
             let billContacts = "";
             if(typeof data.contacts !== 'undefined') {
                 data.contacts.forEach((contact, key) => {
@@ -87,6 +103,7 @@
                         "<td>" + setUndefined(contact.mobile) + "</td>" +
                         "<td>" + setUndefined(contact.mail) + "</td>" +
                         "<td>" + setUndefined(contact.comments) + "</td>" +
+                        "<td>...</td>" +
                         "</tr></tbody>";
                 });
                 document.getElementById('billContacts').innerHTML = billContacts;
