@@ -13,15 +13,19 @@ router.post('/bill',billController.processAddBill);
 //Bill Controller
 router.get('/bills/in', billController.listInBill);
 router.get('/bills/out', billController.listOutBill);
-router.put('/update_bill', billController.updateBill);
+router.put('/update_bill', billController.processUpdateBill);
 
 //Middleware
 
 //Customer Controller
 router.get('/customers', customerController.customersList);
+router.post('/add_customer', customerController.processAddCustomer);
+router.put('/update_customer', customerController.processUpdateCustomer);
 
 //Provider Controller
 router.get('/providers', providerController.providersList);
+router.post('/add_provider', providerController.processAddProvider);
+router.put('/update_provider', providerController.processUpdateProvider);
 
 
 module.exports = router;

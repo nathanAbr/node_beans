@@ -12,25 +12,26 @@ function listInBill(year) {
     }).populate("provider");
 }
 
-function updateBill(req, res) {
-    Bill.findByIdAndUpdate(
-        req.body.id, { 
+function processUpdateBill(params) {
+    action_date = new Date(params.action_date);
+    billing_date = new Date(params.billing_date);
+    payment_date = new Date(params.payment_date);
+    recovery_date = new Date(params.recovery_date);
+    return Bill.findByIdAndUpdate(
+        params.id, { 
             $set: { 
-                customer : req.body.customer
-                , type: req.body.type
-                , designation : req.body.designation
-                , amount : req.body.amount
-                , vat : req.body.vat
-                , action_date : req.body.action_date
-                , billing_date : req.body.billing_date
-                , payment_date : req.body.payment_date
-                , recovery_date : req.body.recovery_date
+                customer : params.customer
+                , type: params.type
+                , designation : params.designation
+                , amount : params.amount
+                , vat : params.vat
+                , action_date : action_date
+                , billing_date : billing_date
+                , payment_date : payment_date
+                , recovery_date : recovery_date
             }
         }, { 
         new: true 
-    }, function (err, doc) {
-	  if (err) return console.log(err);
-	  res.send(doc);
     });
 }
 
@@ -55,6 +56,6 @@ module.exports = {
     listInBill: listInBill,
     addBill : addBill,
     listOutBill: listOutBill,
-    updateBill : updateBill
+    processUpdateBill : processUpdateBill
 };
 
