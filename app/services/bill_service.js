@@ -18,7 +18,7 @@ function listInBill(year) {
         "customer":{$exists:false},
         "provider":{$exists:true},
         "action_date": {$gt: firstDate, $lt: lastDate}
-    }).populate("provider");
+    }).populate("provider").exec();
 }
 
 function processUpdateBill(params) {
@@ -48,7 +48,7 @@ function listOutBill(year) {
         "provider":{$exists:false},
         "customer":{$exists:true},
         "action_date": {$gt: firstDate, $lt: lastDate}
-    }).populate("customer");
+    }).populate("customer").exec();
 }
 
 // Create a bill
@@ -57,11 +57,55 @@ function addBill(params){
 	return bill.save();
 }
 
-function recapInBills(year){
-    return console.log("todo: bill_service/recapInBills!");
+function calcCustomerVAT(year){
+    const vat =  mongoose.model('vat',new mongoose.Schema({vat_amount:Number,amount:Number,vat:Number, alltaxes:Number}));
+    firstDate = new Date(year, 0, 1);
+    lastDate = new Date(year, 11, 31);
+    return Bill.aggregate([
+        {
+            "$match":{
+                "provider":{$exists:false},
+                "customer":{$exists:true},
+                "action_date": {$gt: firstDate, $lt: lastDate},
+                "vat":{$gt:0}
+            }
+        },{
+            "$project": {
+                vat_amount:{
+                    $divide:[{$multiply:[
+                        "$amount",
+                        "$vat"
+                    ]},100]
+                },
+                amount:1, 
+                    vat:1
+            }
+        },{
+            "$project": {
+                amount:1, vat:1, vat_amount:1, alltaxes:{
+                    $add:[
+                        "$vat_amount",
+                        "$amount"
+                    ]
+                }
+            }
+        },
+        {
+            "$out":"vat"
+        }]).exec(()=>{
+        vat.aggregate([{$project:{"total_vat":{}}}])
+    });
 }
 
+
+function recapInBills(year){
+    console.log("todo: bill_service/recapInBills!");
+    return new Promise(resolve => {
+        resolve({total : 0})
+    })
+}
 function recapOutBills(year){
+    //calcCustomerVAT(year);
     firstDate = new Date(year, 0, 1);
     lastDate = new Date(year, 11, 31);
     return Bill.aggregate([
@@ -76,11 +120,11 @@ function recapOutBills(year){
             "$group":{
                 _id: { year: { $year: "$action_date" } },
                 totalAmount: { $sum: "$amount" },
+                /*totalVAT: {},*/
                 count: { $sum: 1 }
             }
         }
-    ]);
-    
+    ]).exec();
     
 }
 module.exports = {
