@@ -1,11 +1,6 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-</head>
-<body>
+<%- include partials/head.ejs %>
+<%- include partials/header.ejs %>
 <ul>
     <% for (customer of customers) { %><li><%= customer.name %></li><% } %>
 </ul>
-</body>
-</html>
+<%- include partials/footer.ejs %>

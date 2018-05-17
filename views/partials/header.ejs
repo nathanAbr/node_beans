@@ -1,9 +1,10 @@
 <header>
     <nav id="nav" class="navbar navbar-expand-md">
-        <div class="navbar-header">
-            <a class="navbar-brand" href="/">Node Bean</a>
-        </div>
-        <ul style="width:100%" class="nav navbar-nav nav-fill">
+        
+        <ul class="nav navbar-nav nav-tabs nav-fill">
+            <li class="navbar-header">
+            <a class="nav-item navbar-brand" href="/">Node Bean</a>
+        </li>
             <li class="nav-item"> <a class="nav-link" href="/bills/in">Bills In</a></li>
             <li class="nav-item"> <a class="nav-link" href="/bills/out">Bills Out</a></li>
             <li class="nav-item"> <a class="nav-link" href="/bill">Bills Add</a></li>
@@ -11,4 +12,12 @@
             <li class="nav-item"> <a class="nav-link" href="/providers">Providers</a></li>
         </ul>
     </nav>
+     <script>
+            $(()=>{
+                $('a[href="' + this.location.pathname + '"]').parents('li').addClass('active');
+            console.log($($('a[href="' + this.location.pathname + '"]').parents('li'))[0])
+            
+            })
+            
+        </script>
 </header>
