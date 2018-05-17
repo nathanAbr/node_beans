@@ -210,7 +210,7 @@
             url: path,
             data: JSON.stringify(company),
             success: (result)=>{
-                console.log(result);
+                getContact(result._id);
             },
             error: (err)=>{
                 console.log(err);
