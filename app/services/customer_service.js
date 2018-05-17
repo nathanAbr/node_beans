@@ -16,7 +16,7 @@ function processUpdateCustomer(params) {
                 , tel : params.tel
                 , mobile : params.mobile
             },
-            $addToSet : {contacts: params.contacts}
+            $addToSet : {contacts: { $each: params.contacts}}
         }, {
         multi: true,
     });
