@@ -1,4 +1,5 @@
 const Customer = require('../../models/company').customerModel;
+const mongoose = require('mongoose');
 
 function processAddCustomer(params){
     let customer = new Customer(params);
@@ -28,10 +29,15 @@ function customerSelect(){
     return Customer.find({},{name:1});
 }
 
+function getOne(id){
+    return Customer.findById(id.toString());
+}
+
 module.exports = {
     processAddCustomer : processAddCustomer,
     processUpdateCustomer: processUpdateCustomer,
     customersList : customersList,
+    getOne: getOne,
     customerSelect: customerSelect
 };
 

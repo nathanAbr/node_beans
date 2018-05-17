@@ -1,6 +1,81 @@
 <%- include partials/head.ejs %>
-  <h1><%= title %></h1>
-<%- include partials/selectCustomer.ejs %>
-<%- include partials/selectProvider.ejs %>
+<%- include partials/header.ejs %>
+<script src="js/add_bill.js"></script>
+  <h1>
+    <%= title %>
+  </h1>
+  <style>
+    #addBillForm{
+      width: 70%;
+      margin: 1em auto;
+    }
+    .buttons{
+      display: flex;
+      justify-content: flex-end;
+    }
+    #send{
+      margin-right: 1em;
+    }
+  </style>
 
-<%- include partials/footer.ejs %>
+  <div id="addBillForm" name="addBill">
+
+    <div class="form-group row">
+      <label for="customer" class="col-2 col-form-label">Client : </label>
+      <div class="col-10">
+        <%- include partials/selectCustomer.ejs %>
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="provider" class="col-2 col-form-label">Fournisseur</label>
+      <div class="col-10">
+        <%- include partials/selectProvider.ejs %>
+      </div>
+    </div>
+
+    <div class="form-group row">
+      <label for="type" class="col-2 col-form-label">Type :</label>
+      <div class="col-10">
+        <select name="type" id="type" class="form-control">
+          <option value="Formation">Formation</option>
+          <option value="Dev">Développement</option>
+          <option></option>
+        </select>
+      </div>
+
+    </div>
+    <div class="form-group row">
+      <label for="designation" class="col-2 col-form-label">Désignation :</label>
+      <div class="col-10">
+        <input type="text" name="designation" id="designation" class="form-control" />
+      </div>
+
+    </div>
+    <div class="form-group row">
+      <label for="amount" class="col-2 col-form-label">Montant :</label>
+      <div class="col-10">
+        <input type="text" name="amount" id="amount" class="form-control" />
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="billing_date" class="col-2 col-form-label">Date de facturation :</label>
+
+      <div class="col-10">
+        <input type="date" id="billing_date" name="billing_date" class="form-control" />
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="payment_date" class="col-2 col-form-label">Date de payement :</label>
+      <div class="col-10">
+        <input type="date" id="payment_date" name="payment_date" class="form-control" />
+      </div>
+    </div>
+    <div class="buttons">
+      <button id="send" class="btn btn-success">Enregistrer</button>
+      <button class="btn btn-danger">Annuler</button>
+    </div>
+
+
+  </div>
+
+  <%- include partials/footer.ejs %>

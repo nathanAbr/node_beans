@@ -1,6 +1,7 @@
 const Bill =  require('../../models/bill'),
     Customer = require('../../models/company').customerModel,
-    Provider = require('../../models/company').providerModel;
+    Provider = require('../../models/company').providerModel,
+    mongoose = require('mongoose');
 
 function listInBill(year) {
     firstDate = new Date(year, 0, 1);
@@ -52,10 +53,29 @@ function addBill(params){
 	return bill.save();
 }
 
+function recapInBills(){
+    Bill.aggregate([
+        {"$match":{
+            "provider":{$exists:false},
+            "customer":{$exists:true}
+            }
+        }
+    ]).then((err,result)=>{
+        if(err) return console.log(err);
+        console.log(result);
+        return result;
+    })
+}
+
+function recapOutBills(){
+    return console.log("todo!");
+}
 module.exports = {
     listInBill: listInBill,
     addBill : addBill,
     listOutBill: listOutBill,
-    processUpdateBill : processUpdateBill
+    processUpdateBill : processUpdateBill,
+    recapInBills: recapInBills,
+    recapOutBills: recapOutBills
 };
 

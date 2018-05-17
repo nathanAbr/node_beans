@@ -19,6 +19,7 @@ router.put('/update_bill', billController.processUpdateBill);
 
 //Customer Controller
 router.get('/customers', customerController.customersList);
+router.get('/customer/:id', customerController.getOne);
 router.post('/add_customer', customerController.processAddCustomer);
 router.put('/update_customer', customerController.processUpdateCustomer);
 
