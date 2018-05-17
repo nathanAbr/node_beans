@@ -47,7 +47,7 @@ function listOutBill(year) {
 }
 
 // Create a bill
-function addBill(params){
+function processAddBill(params){
     let bill = new Bill(params);
 	return bill.save();
 }
@@ -71,7 +71,7 @@ function recapOutBills(){
 }
 module.exports = {
     listInBill: listInBill,
-    addBill : addBill,
+    processAddBill : processAddBill,
     listOutBill: listOutBill,
     updateBill : updateBill,
     recapInBills: recapInBills,

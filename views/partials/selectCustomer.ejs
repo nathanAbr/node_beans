@@ -1,4 +1,5 @@
-<select class="form-control">
+<select class="form-control" id="customerChoice">
+	<option selected></option>
 	<% for(i in customers) { %>
 	<option value="<%= customers[i]._id %>">
 		<%= customers[i].name %>
