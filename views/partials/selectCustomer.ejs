@@ -1,5 +1,7 @@
-<select><% for(i in customers) { %>
+<select class="form-control">
+	<% for(i in customers) { %>
 	<option value="<%= customers[i]._id %>">
 		<%= customers[i].name %>
 	</option>
-<% } %></select>
+	<% } %>
+</select>
