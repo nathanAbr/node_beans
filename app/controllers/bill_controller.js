@@ -56,7 +56,7 @@ function addBill(req,res){
         customerService.customerSelect().exec().then( (customers)=>{
             console.log('providers: '+providers+'; customers: '+customers);
             res.render('bill_add',{customers: customers, providers: providers, title:'Ajout d\'une facture'});
-        })
+        });
     });        
     //    console.log('providers: '+providers);
         
@@ -78,19 +78,31 @@ function processAddBill(req, res) {
         res.render('bills_view',{bills:bill})});
 }
 
+function updateBill(req,res){
+    services.billSelect().exec().then((bills) => {
+        providerService.providerSelect().exec().then((providers)=>{
+            customerService.customerSelect().exec().then( (customers)=>{
+                res.render('bill_update',{bill:0, bill_id: req.params.id, bills: bills, customers: customers, providers: providers, title:'Edition d\'une facture'});
+            });
+        });
+    });
+}
+
+function updateOneBill(req,res){
+    services.findOneBill(req.params.id).exec().then((bill) => {
+        console.log('bill: ' +bill);
+        res.send({bill: bill});
+    });
+}
+
 function processUpdateBill(req, res) {
-    var val = verifyValues(req);
-    if(!val) {
         let params = req.body;
+        console.log(req.body);
         services.processUpdateBill(params).then((err, bill) => {
             if (err) return res.send(err);
             console.log(bill); 
             res.render('bills_view',{bills:bill});
         });
-    }
-    else {
-        console.log(val);
-    }
 }
 
 function listInBill(req, res) {
@@ -124,9 +136,11 @@ function listOutBill(req, res) {
     
 module.exports = {
     listInBill: listInBill,
+    listOutBill: listOutBill,
     addBill: addBill,
     processAddBill: processAddBill,
-    listOutBill: listOutBill,
+    updateBill: updateBill,
+    updateOneBill: updateOneBill,
     processUpdateBill: processUpdateBill
 };
     
