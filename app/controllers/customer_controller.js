@@ -7,7 +7,16 @@ function customersList(req, res) {
         });
 }
 
+function getOne(req, res){
+    console.log(req);
+    // services.getOne(req.get("id")).then((customer)=>{
+    //     console.log(customer);
+    //     res.send(customer);
+    // });
+}
+
 module.exports = {
-    customersList : customersList
+    customersList : customersList,
+    getOne: getOne,
 };
 
