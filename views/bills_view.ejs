@@ -22,10 +22,81 @@
         <td><% if(typeof bill.action_date !== 'undefined'){ %><%= bill.action_date.getDate() %>/<% if(bill.action_date.getMonth() + 1  < 10){ %>0<%}%><%= bill.action_date.getMonth() + 1 %>/<%= bill.action_date.getFullYear() %><% } %></td>
         <td><% if(typeof bill.payment_date !== 'undefined'){ %><%= bill.payment_date.getDate() %>/<% if(bill.payment_date.getMonth() + 1  < 10){ %>0<%}%><%= bill.payment_date.getMonth() + 1 %>/<%= bill.payment_date.getFullYear() %><% } %></td>
         <td><% if(typeof bill.recovery_date !== 'undefined'){ %><%= bill.recovery_date.getDate() %>/<% if(bill.recovery_date.getMonth() + 1  < 10){ %>0<%}%><%= bill.recovery_date.getMonth() + 1 %>/<%= bill.recovery_date.getFullYear() %><% } %></td>
-        <td>Voir</td>
+        <td>
+            <% if(typeof bill.customer != 'undefined'){ %>
+            <button onclick="getContact('<%= bill.customer._id %>')" type="button" class="btn btn-primary" data-toggle="modal" data-target="#contactModal">
+                Voir
+            </button>
+            <% } %>
+            <% if(typeof bill.provider != 'undefined'){ %>
+            <button onclick="getContact('<%= bill.provider._id %>')" type="button" class="btn btn-primary" data-toggle="modal" data-target="#contactModal">
+                Voir
+            </button>
+            <% } %>
+        </td>
     </tr>
     <% }); %>
     </tbody>
 </table>
+
+<div class="modal fade" id="contactModal" tabindex="-1" role="dialog" aria-labelledby="contactModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalLabel"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="contact">
+                <table class="table table-hover table-dark">
+                    <thead class="thead-light">
+                        <th scope="col">Nom</th>
+                        <th scope="col">Tél</th>
+                        <th scope="cop">Mobile</th>
+                        <th scope="col">Mail</th>
+                        <th scope="col">Commentaires</th>
+                    </thead>
+                    <tbody id="billContacts">
+
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function getContact(id){
+        $.get('/customer/' + id, false, callback, 'json');
+    }
+
+    function callback(data){
+        console.log(data);
+        $('#modalLabel').textContent = data.name;
+        if(typeof data !== 'undefined' && data !== null) {
+            let billContacts = "";
+            if(typeof data.contacts !== 'undefined') {
+                data.contacts.forEach((contact, key) => {
+                    billContacts =
+                        "<tbody><tr>" +
+                        "<td>" + contact.name + "</td>" +
+                        "<td>" + contact.tel + "</td>" +
+                        "<td>" + contact.mobile + "</td>" +
+                        "<td>" + contact.mail + "</td>" +
+                        "<td>" + contact.comments + "</td>" +
+                        "</tr></tbody>";
+                });
+                $('#billContacts').innerHTML = billContacts;
+            } else {
+                $('#billContacts').innerHTML = "<h3>Aucun contact n'a été renseigné.</h3>";
+            }
+        }
+    }
+</script>
 
 <%- include partials/footer.ejs %>
