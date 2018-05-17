@@ -54,6 +54,10 @@ function addBill(params){
 }
 
 function recapInBills(){
+    return console.log("todo!");
+}
+
+function recapOutBills(){
     Bill.aggregate([
         {"$match":{
             "provider":{$exists:false},
@@ -65,10 +69,7 @@ function recapInBills(){
         console.log(result);
         return result;
     })
-}
-
-function recapOutBills(){
-    return console.log("todo!");
+    
 }
 module.exports = {
     listInBill: listInBill,
