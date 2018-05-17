@@ -6,17 +6,6 @@ const errorHandler = require('../error_management');
 let currentDate = new Date();
 let currentYear = currentDate.getFullYear();
 
-function updateBill(req, res) {
-    var val = verifyValues(req);
-    if(!val) {
-        services.updateBill(req, res);
-        console.log('update bill');
-    }
-    else {
-        console.log(val);
-    }
-}
-
 function listInBill(req, res) {
     
     if(typeof req.get("year") !== 'undefined' && req.get("year") !== "" && req.get("year") !== null){
@@ -43,7 +32,6 @@ function listOutBill(req, res) {
         });
     }
 }
-
 /*
     montre le formulaire d'ajout d'une facture
     
@@ -89,13 +77,57 @@ function processAddBill(req, res) {
         console.log(bill); 
         res.render('bills_view',{bills:bill})});
 }
+
+function processUpdateBill(req, res) {
+    var val = verifyValues(req);
+    if(!val) {
+        let params = req.body;
+        services.processUpdateBill(params).then((err, bill) => {
+            if (err) return res.send(err);
+            console.log(bill); 
+            res.render('bills_view',{bills:bill});
+        });
+    }
+    else {
+        console.log(val);
+    }
+}
+
+function listInBill(req, res) {
+
+    if(typeof req.get("year") !== 'undefined' && req.get("year") !== "" && req.get("year") !== null){
+        services.listInBill(req.get("year")).then((bills)=>{
+            console.log(bills);
+            res.render('bills_view', {bills:bills});
+        });
+    } else {
+        services.listInBill(currentYear).then((bills)=>{
+            console.log(bills);
+            res.render('bills_view', {bills:bills});
+        });
+    }
+}
+
+function listOutBill(req, res) {
+    if(typeof req.get("year") !== 'undefined' && req.get("year") !== "" && req.get("year") !== null){
+        services.listOutBill(req.get("year")).then((bills)=>{
+            console.log(bills);
+            res.render(res, 'bills_view', {bills:bills});
+        });
+    } else {
+        services.listOutBill(currentYear).then((bills)=>{
+            console.log(bills);
+            res.render('bills_view', {bills:bills});
+        });
+    }
+}
     
 module.exports = {
     listInBill: listInBill,
     addBill: addBill,
     processAddBill: processAddBill,
     listOutBill: listOutBill,
-    updateBill: updateBill
+    processUpdateBill: processUpdateBill
 };
     
 function verifyValues(req) {
@@ -124,7 +156,7 @@ function verifyValues(req) {
         return errorHandler.valueError('bill tva');
     }
     
-    if(typeof req.body.action_date !== 'object') {
+    if(typeof req.body.action_date !== 'string') {
         return errorHandler.typeError('bill service date', 'object');
     }
     
