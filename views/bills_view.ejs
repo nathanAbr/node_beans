@@ -82,11 +82,11 @@
                 data.contacts.forEach((contact, key) => {
                     billContacts =
                         "<tbody><tr>" +
-                        "<td>" + contact.name + "</td>" +
-                        "<td>" + contact.tel + "</td>" +
-                        "<td>" + contact.mobile + "</td>" +
-                        "<td>" + contact.mail + "</td>" +
-                        "<td>" + contact.comments + "</td>" +
+                        "<td>" + setUndefined(contact.name) + "</td>" +
+                        "<td>" + setUndefined(contact.tel) + "</td>" +
+                        "<td>" + setUndefined(contact.mobile) + "</td>" +
+                        "<td>" + setUndefined(contact.mail) + "</td>" +
+                        "<td>" + setUndefined(contact.comments) + "</td>" +
                         "</tr></tbody>";
                 });
                 document.getElementById('billContacts').innerHTML = billContacts;
@@ -94,6 +94,13 @@
                 document.getElementById('billContacts').innerHTML = "<h3>Aucun contact n'a été renseigné.</h3>";
             }
         }
+    }
+
+    function setUndefined(value){
+        if(typeof value === 'undefined' || value === null || value === ""){
+            value = "-";
+        }
+        return value;
     }
 </script>
 
