@@ -82,6 +82,7 @@ function addBill(req,res){
 
 function processAddBill(req, res) {    
     let params = req.body;
+    console.log('params received!!! '+params);
     if (params.action_date) params.action_date = new Date(params.action_date);
     if (params.billing_date) params.billing_date = new Date(params.billing_date);
     if (params.recovery_date) params.recovery_date = new Date(params.recovery_date);
