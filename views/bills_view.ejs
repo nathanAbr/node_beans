@@ -191,8 +191,31 @@
             mail: data[3].value,
             comments: data[4].value,
         };
+        if(company.contacts == null){
+            company.contacts = [];
+        }
         company.contacts.push(contact);
-        console.log(company);
+        let path;
+        if(document.title === "Factures entrantes"){
+            path = '/update_provider';
+        }
+        if(document.title === "Factures sortantes"){
+            path = '/update_customer';
+        } else {
+            return;
+        }
+        $.ajax({
+            type: 'PUT',
+            contentType: 'application/json',
+            url: path,
+            data: JSON.stringify(company),
+            success: (result)=>{
+                console.log(result);
+            },
+            error: (err)=>{
+                console.log(err);
+            }
+        });
     }
 </script>
 

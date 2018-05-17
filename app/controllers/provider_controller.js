@@ -13,8 +13,9 @@ function processUpdateProvider(req, res) {
     let params = req.body;
     services.processUpdateProvider(params).then((err, provider) => {
     if (err) return res.send(err);
-        console.log(provider); 
-        res.render('providers_view',{title:'providers',providers:provider});
+        res.send(provider);
+    }).catch((err)=>{
+        console.log(err);
     });
 }
 

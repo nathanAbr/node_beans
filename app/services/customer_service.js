@@ -7,8 +7,9 @@ function processAddCustomer(params){
 }
 
 function processUpdateCustomer(params) {
+    console.log(params);
     return Customer.findByIdAndUpdate(
-        params.id, { 
+        params._id, {
             $set: { 
                 name : params.name
                 , address: params.address

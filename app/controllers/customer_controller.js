@@ -13,8 +13,9 @@ function processUpdateCustomer(req, res) {
     let params = req.body;
     services.processUpdateCustomer(params).then((err, customer) => {
     if (err) return res.send(err);
-        console.log(customer); 
-        res.render('customers_view',{title:'customers',customers:customer});
+        res.send(customer);
+    }).catch((err)=>{
+        console.log(err);
     });
 }
 

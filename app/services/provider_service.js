@@ -6,8 +6,9 @@ function processAddProvider(params){
 }
 
 function processUpdateProvider(params) {
+    console.log(params);
     return Provider.findByIdAndUpdate(
-        params.id, { 
+        params._id, {
             $set: { 
                 name : params.name
                 , address: params.address
