@@ -2,6 +2,10 @@ const mongoose = require('mongoose');
 
 /*
 {
+    name: 'Fournisseur 1',
+    address:{road:'6 rue des Saphirs', zip:'44000', city:'Nantes'}
+},{
+
     name: 'Ecole du Code',
     address:{road:'6 rue des Pommes', zip:'44000', city:'Nantes'},    
     contacts:['ObjectId1', 'ObjectId2']

@@ -4,6 +4,7 @@ const express = require('express'),
 let mainController = require('./controllers/home_controller');
 let billController = require('./controllers/bill_controller');
 let customerController = require('./controllers/customer_controller');
+let providerController = require('./controllers/provider_controller');
 
 router.get('/', mainController.home);
 router.get('/bill', billController.addBill)
@@ -19,6 +20,9 @@ router.put('/update_bill', billController.updateBill);
 //Customer Controller
 router.get('/customers', customerController.customersList);
 router.get('/customer/:id', customerController.getOne);
+
+//Provider Controller
+router.get('/providers', providerController.providersList);
 
 
 module.exports = router;

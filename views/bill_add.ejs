@@ -1,7 +1,6 @@
-<% include('./partials/head') %>
+<%- include partials/head.ejs %>
   <h1><%= title %></h1>
+<%- include partials/selectCustomer.ejs %>
+<%- include partials/selectProvider.ejs %>
 
-<% include ('./partials/selectCustomer') %>
-<% include ('./partials/selectProvider') %>
-
-<% include('./partials/footer') %>
+<%- include partials/footer.ejs %>
