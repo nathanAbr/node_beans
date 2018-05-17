@@ -39,8 +39,8 @@
     </tbody>
 </table>
 
-<div class="modal fade" id="contactModal" tabindex="-1" role="dialog" aria-labelledby="contactModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+<div class="modal fade bd-example-modal-lg" id="contactModal" tabindex="-1" role="dialog" aria-labelledby="contactModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="modalLabel"></h5>
@@ -53,7 +53,7 @@
                     <thead class="thead-light">
                         <th scope="col">Nom</th>
                         <th scope="col">Tél</th>
-                        <th scope="cop">Mobile</th>
+                        <th scope="col">Mobile</th>
                         <th scope="col">Mail</th>
                         <th scope="col">Commentaires</th>
                     </thead>
@@ -64,7 +64,6 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
             </div>
         </div>
     </div>
@@ -76,8 +75,7 @@
     }
 
     function callback(data){
-        console.log(data);
-        $('#modalLabel').textContent = data.name;
+        document.getElementById('modalLabel').innerHTML = data.name;
         if(typeof data !== 'undefined' && data !== null) {
             let billContacts = "";
             if(typeof data.contacts !== 'undefined') {
@@ -91,9 +89,9 @@
                         "<td>" + contact.comments + "</td>" +
                         "</tr></tbody>";
                 });
-                $('#billContacts').innerHTML = billContacts;
+                document.getElementById('billContacts').innerHTML = billContacts;
             } else {
-                $('#billContacts').innerHTML = "<h3>Aucun contact n'a été renseigné.</h3>";
+                document.getElementById('billContacts').innerHTML = "<h3>Aucun contact n'a été renseigné.</h3>";
             }
         }
     }

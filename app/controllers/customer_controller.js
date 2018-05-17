@@ -7,7 +7,7 @@ function customersList(req, res) {
 }
 
 function getOne(req, res){
-    services.getOne(req.get("id")).then((customer)=>{
+    services.getOne(req.params.id).then((customer)=>{
         res.send(customer);
     }).catch((err)=>{
         console.log(err);

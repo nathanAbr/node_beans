@@ -10,7 +10,7 @@ function customerSelect(){
 }
 
 function getOne(id){
-    return Customer.findById(id.toString());
+    return Customer.findById(id);
 }
 
 module.exports = {
