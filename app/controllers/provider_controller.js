@@ -6,7 +6,7 @@ function processAddProvider(req, res) {
     services.processAddProvider(params).then((err,provider)=>{
         if (err) return res.send(err);
         console.log(provider); 
-        res.render('providers_view',{providers:provider})});
+        res.render('providers_view',{title:'providers',providers:provider})});
 }
 
 function processUpdateProvider(req, res) {
@@ -14,14 +14,14 @@ function processUpdateProvider(req, res) {
     services.processUpdateProvider(params).then((err, provider) => {
     if (err) return res.send(err);
         console.log(provider); 
-        res.render('providers_view',{providers:provider});
+        res.render('providers_view',{title:'providers',providers:provider});
     });
 }
 
 function providersList(req, res) {
         services.providersList().then( (providers)=>{
             console.log(providers);
-            res.render('providers_view', {providers:providers});
+            res.render('providers_view', {title:'providers',providers:providers});
         });
 }
 

@@ -53,22 +53,30 @@ function addBill(params){
 	return bill.save();
 }
 
-function recapInBills(){
-    return console.log("todo!");
+function recapInBills(year){
+    return console.log("todo: bill_service/recapInBills!");
 }
 
-function recapOutBills(){
-    Bill.aggregate([
-        {"$match":{
-            "provider":{$exists:false},
-            "customer":{$exists:true}
+function recapOutBills(year){
+    firstDate = new Date(year, 0, 1);
+    lastDate = new Date(year, 11, 31);
+    return Bill.aggregate([
+        {
+            "$match":{
+                "provider":{$exists:false},
+                "customer":{$exists:true},
+                "action_date": {$gt: firstDate, $lt: lastDate}
+            }
+        },
+       {
+            "$group":{
+                _id: { year: { $year: "$action_date" } },
+                totalAmount: { $sum: "$amount" },
+                count: { $sum: 1 }
             }
         }
-    ]).then((err,result)=>{
-        if(err) return console.log(err);
-        console.log(result);
-        return result;
-    })
+    ]);
+    
     
 }
 module.exports = {

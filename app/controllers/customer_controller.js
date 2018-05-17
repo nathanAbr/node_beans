@@ -6,7 +6,7 @@ function processAddCustomer(req, res) {
     services.processAddCustomer(params).then((err,customer)=>{
         if (err) return res.send(err);
         console.log(customer); 
-        res.render('customers_view',{customers:customer})});
+        res.render('customers_view',{title:'customers',customers:customer})});
 }
 
 function processUpdateCustomer(req, res) {
@@ -14,13 +14,13 @@ function processUpdateCustomer(req, res) {
     services.processUpdateCustomer(params).then((err, customer) => {
     if (err) return res.send(err);
         console.log(customer); 
-        res.render('customers_view',{customers:customer});
+        res.render('customers_view',{title:'customers',customers:customer});
     });
 }
 
 function customersList(req, res) {
         services.customersList().then( (customers)=>{
-            res.render('customers_view', {customers:customers});
+            res.render('customers_view', {title:'customers',customers:customers});
         });
 }
 
