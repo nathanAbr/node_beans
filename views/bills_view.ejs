@@ -59,20 +59,21 @@
                         <p id="country"></p>
                     </div>
                 </div>
-                <table class="table table-hover table-dark">
-                    <thead class="thead-light">
-                        <th scope="col">Nom</th>
-                        <th scope="col">Tél</th>
-                        <th scope="col">Mobile</th>
-                        <th scope="col">Mail</th>
-                        <th scope="col">Commentaires</th>
-                        <th scope="col">Action</th>
-                    </thead>
-                    <tbody id="billContacts">
-
-                    </tbody>
-                </table>
-                <button type="button" class="btn btn-success">Ajouter un contact</button>
+                <form id="addContact">
+                    <table class="table table-hover table-dark">
+                        <thead class="thead-light">
+                            <th scope="col">Nom</th>
+                            <th scope="col">Tél</th>
+                            <th scope="col">Mobile</th>
+                            <th scope="col">Mail</th>
+                            <th scope="col">Commentaires</th>
+                            <th scope="col">Action</th>
+                        </thead>
+                        <tbody id="billContacts">
+                        </tbody>
+                    </table>
+                </form>
+                <button type="button" class="btn btn-success" onclick="createForm('billContacts', fields)">Ajouter un contact</button>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -82,6 +83,35 @@
 </div>
 
 <script>
+
+    const fields = [
+        {
+            "type": "input",
+            "label": "Nom",
+            "required": true,
+        },
+        {
+            "type": "input",
+            "label": "Tél",
+            "required": false,
+        },
+        {
+            "type": "input",
+            "label": "Mobile",
+            "required": false,
+        },
+        {
+            "type": "input",
+            "label": "Mail",
+            "required": true,
+        },
+        {
+            "type": "input",
+            "label": "Commentaires",
+            "required": false,
+        },
+    ];
+
     function getContact(id){
         $.get('/customer/' + id, false, callback, 'json');
     }
@@ -118,6 +148,41 @@
             value = "-";
         }
         return value;
+    }
+
+    function createForm(elementId, arrayField){
+        let tr = document.getElementById(elementId).appendChild(document.createElement('tr'));
+        arrayField.forEach((field, key)=>{
+            let td = document.createElement('td');
+            tr.appendChild(td);
+            let formGroup = document.createElement('div');
+            formGroup.setAttribute("class", "form-group");
+            td.appendChild(formGroup);
+            let f = formGroup.appendChild(document.createElement('input'));
+            f.setAttribute("placeholder", field.label);
+            f.setAttribute("type", field.type);
+            f.setAttribute("class", "form-control");
+            f.setAttribute("name", "field-" + key);
+            if(field.required){
+                f.required = true;
+            }
+        });
+        let td = document.createElement('td');
+        tr.appendChild(td);
+        let formGroup = document.createElement('div');
+        formGroup.setAttribute("class", "form-group");
+        td.appendChild(formGroup);
+        let submit = formGroup.appendChild(document.createElement("button"));
+        submit.setAttribute("type", "button");
+        submit.setAttribute("class", "btn btn-success");
+        submit.setAttribute("name", "save");
+        submit.innerText = "Ajouter";
+        submit.setAttribute("onclick", "addContact()");
+    }
+
+    function addContact(){
+        let data = new FormData(document.getElementById('addContact'));
+        console.log(data);
     }
 </script>
 
