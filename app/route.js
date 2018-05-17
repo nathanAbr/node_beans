@@ -5,18 +5,19 @@ let mainController = require('./controllers/home_controller');
 let billController = require('./controllers/bill_controller');
 let customerController = require('./controllers/customer_controller');
 let providerController = require('./controllers/provider_controller');
-
-let bodyParser = require('body-parser');
-
-let bodyParserJson = bodyParser.json();
+let bodyParserJson = require('body-parser').json();
 
 router.get('/', mainController.home);
-router.get('/bill', billController.addBill)
-router.post('/bill',billController.processAddBill);
+//test route:
+router.put('/', bodyParserJson, mainController.test);
 
 //Bill Controller
+router.get('/bill', billController.addBill)
+router.post('/bill',billController.processAddBill);
 router.get('/bills/in', billController.listInBill);
 router.get('/bills/out', billController.listOutBill);
+router.get('/update_bill', billController.updateBill);
+router.get('/update_bill/:id', billController.updateOneBill);
 router.put('/update_bill', billController.processUpdateBill);
 
 //Middleware
@@ -31,6 +32,5 @@ router.put('/update_customer', customerController.processUpdateCustomer);
 router.get('/providers', providerController.providersList);
 router.post('/add_provider', providerController.processAddProvider);
 router.put('/update_provider', bodyParserJson, providerController.processUpdateProvider);
-
 
 module.exports = router;
