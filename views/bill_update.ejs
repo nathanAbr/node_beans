@@ -82,14 +82,21 @@
 
     $('#send').on('click', function(object) {
         var URL = '/update_bill/';
+        var customer = $("#customer_select").find('option:selected').attr('id');
+        if(customer == 'customer_none') customer = "";
+        var provider = $("#provider_select").find('option:selected').attr('id');
+        if(provider == 'provider_none') provider = "";
+        var billing_date = new Date(document.getElementById('billing_date').value);
+        var payment_date = new Date(document.getElementById('payment_date').value);
+        if()
         var dataObject = {
             "_id" : $("#selectBill").find('option:selected').attr('id'),
             "designation" : document.getElementById('designation').value,
             "amount" : document.getElementById('amount').value,
-            "billing_date" : document.getElementById('billing_date').value,
-            "payment_date" : document.getElementById('payment_date').value,
-            "customer": $("#customer_select").find('option:selected').attr('id'),
-            "provider": $("#provider_select").find('option:selected').attr('id'),
+            "billing_date" : billing_date,
+            "payment_date" : payment_date,
+            "customer": customer,
+            "provider": provider,
             "type": $("#type").find('option:selected').attr('id')
         };
         $.ajax({
