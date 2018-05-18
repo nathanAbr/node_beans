@@ -5,9 +5,48 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
+var session = require('express-session');
 mongoose.set('debug', true);
 
 var app = express();
+
+require('./models/user');
+var User = mongoose.model('User');
+
+app.use(cookieParser());
+app.use(session({
+  secret: '46546546abcdef',
+  saveUninitialized: false,
+  resave: false
+}));
+
+// Call user middleware =======================
+app.use(function (req, res, next) {
+  if (req.cookies.userId) {
+    let userId = req.cookies.log;
+  }
+  if (req.session && (req.session.userId || req.cookies.log)) {
+    userId = req.session.userId ? req.session.userId : req.cookies.log;
+    User.findById(userId, function (err, user) {
+      if (err) return next(err);
+      if (!user) {
+        req.session.destroy();
+        res.clearCookie('log');
+        res.render('pages/index');
+        return;
+      } else {
+        req.user = user;
+        req.session.user = user;
+        req.session.userId = user._id;
+        res.cookie('log', userId.toString(), {
+          expire: new Date(Date.now() + 86400000)
+        });
+      }
+      next();
+    });
+  } else next();
+
+});
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
