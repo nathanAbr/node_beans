@@ -74,7 +74,8 @@ function processAddBill(req, res) {
     services.processAddBill(params).then((err,bill)=>{
         if (err) return res.send(err);
         console.log(bill); 
-        res.render('bills_view',{bills:bill})});
+        res.render('bills_view',{bills:bill});
+    });
 }
 
 function updateBill(req,res){

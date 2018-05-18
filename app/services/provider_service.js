@@ -1,5 +1,9 @@
 const Provider = require('../../models/company').providerModel;
 
+function findOneProvider(id) {
+    return Provider.find({_id: id});
+}
+
 function processAddProvider(params){
     let provider = new Provider(params);
 	return provider.save();
@@ -12,7 +16,7 @@ function processUpdateProvider(params) {
             $set: { 
                 name : params.name
                 , address: params.address
-                , "contacts.$[]" : params.contacts
+                /*, "contacts.$[]" : params.contacts*/
                 , tel : params.tel
                 , mobile : params.mobile
             }
@@ -31,6 +35,7 @@ function providerSelect() {
 }
 
 module.exports = {
+    findOneProvider: findOneProvider,
     processAddProvider : processAddProvider,
     processUpdateProvider : processUpdateProvider,
     providersList : providersList,
