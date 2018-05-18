@@ -1,5 +1,9 @@
 const services = require('../services/provider_service');
 
+function addProvider(req,res){
+    res.render('provider_add',{title:'Ajout d\'un Fournisseur'});       
+}
+
 function processAddProvider(req, res) {    
     let params = req.body;
     
@@ -27,6 +31,7 @@ function providersList(req, res) {
 }
 
 module.exports = {
+    addProvider: addProvider,
     processAddProvider : processAddProvider,
     processUpdateProvider: processUpdateProvider,
     providersList : providersList
