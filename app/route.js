@@ -27,12 +27,16 @@ router.get('/customers', customerController.customersList);
 router.get('/customer/:id', customerController.getOne);
 router.get('/add_customer', customerController.addCustomer);
 router.post('/add_customer', customerController.processAddCustomer);
+router.get('/update_customer', customerController.updateCustomer);
+router.get('/update_customer/:id', customerController.updateOneCustomer);
 router.put('/update_customer', customerController.processUpdateCustomer);
 
 //Provider Controller
 router.get('/providers', providerController.providersList);
 router.get('/add_provider', providerController.addProvider);
 router.post('/add_provider', providerController.processAddProvider);
+router.get('/update_provider', providerController.updateProvider);
+router.get('/update_provider/:id', providerController.updateOneProvider);
 router.put('/update_provider', bodyParserJson, providerController.processUpdateProvider);
 
 module.exports = router;

@@ -13,6 +13,19 @@ function processAddProvider(req, res) {
         res.render('providers_view',{title:'providers',providers:provider})});
 }
 
+function updateProvider(req,res){
+    services.providerSelect().exec().then( (providers)=>{
+        res.render('provider_update',{providers:providers, title:'Edition d\'un Fournisseur'});
+    });
+}
+
+function updateOneProvider(req,res){
+    services.findOneProvider(req.params.id).exec().then((provider) => {
+        console.log('provider: ' +provider);
+        res.send({provider: provider});
+    });
+}
+
 function processUpdateProvider(req, res) {
     let params = req.body;
     services.processUpdateProvider(params).then((err, provider) => {
@@ -33,6 +46,8 @@ function providersList(req, res) {
 module.exports = {
     addProvider: addProvider,
     processAddProvider : processAddProvider,
+    updateProvider: updateProvider,
+    updateOneProvider: updateOneProvider,
     processUpdateProvider: processUpdateProvider,
     providersList : providersList
 };
