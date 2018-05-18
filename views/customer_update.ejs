@@ -1,6 +1,12 @@
 <%- include partials/head.ejs %>
 <%- include partials/header.ejs %>
-  <div id="addCustomerForm" name="addCustomer">
+  <div id="updateCustomerForm" name="updateCustomer">
+    <div class="form-group row">
+      <label for="customer" class="col-2 col-form-label">Client : </label>
+      <div class="col-10">
+        <%- include partials/selectCustomer.ejs %>
+      </div>
+    </div>
     <div class="form-group row">
       <label for="name" class="col-2 col-form-label">Nom :</label>
       <div class="col-10">
@@ -39,8 +45,17 @@
   <%- include partials/footer.ejs %>
 
   <script>
+    function isEmpty(value) {
+        if(value == null) {
+            return "";
+        }
+        else {
+            return value;
+        }
+    }
+
     $('#send').on('click', function(object) {
-        var URL = '/add_customer/';
+        var URL = '/update_customer/';
         var address = {
             "road" : document.getElementById('road').value,
             "zip" : document.getElementById('zip').value,
@@ -48,16 +63,43 @@
             "country": document.getElementById('country').value
         };
         var dataObject = { 
+            "_id" : $("#selectCustomer").find('option:selected').attr('id'),
             "name" : document.getElementById('name').value,
             "address" : address
         };
         $.ajax({
-            type: 'POST',
+            type: 'PUT',
             url: URL,
             contentType: 'application/json',
             data: JSON.stringify(dataObject),
             success: function(result) {
-               window.location.href = "/add_customer/";
+               window.location.href = "/update_customer/";
+            }
+        });
+    });
+    $('#selectCustomer').on('change', function(object) {
+        $.get('/update_customer/' + this.value, function(data) {
+            console.log(data);
+            if(data.customer != null) {
+                if(data.customer["0"].address == null) {
+                    document.getElementById('road').value = "";
+                    document.getElementById('zip').value = "";
+                    document.getElementById('city').value = "";
+                    document.getElementById('country').value = "";
+                } 
+                else {
+                    document.getElementById('road').value = isEmpty(data.customer["0"].address.road);
+                    document.getElementById('zip').value = isEmpty(data.customer["0"].address.zip);
+                    document.getElementById('city').value = isEmpty(data.customer["0"].address.city);
+                    document.getElementById('country').value = isEmpty(data.customer["0"].address.country);
+                }
+            } 
+            else {
+                document.getElementById('name').value = "";
+                document.getElementById('road').value = "";
+                document.getElementById('zip').value = "";
+                document.getElementById('city').value = "";
+                document.getElementById('country').value = "";
             }
         });
     });
