@@ -1,5 +1,9 @@
 const services = require('../services/customer_service');
 
+function addCustomer(req,res){
+    res.render('customer_add',{title:'Ajout d\'un client'});       
+}
+
 function processAddCustomer(req, res) {    
     let params = req.body;
     
@@ -34,9 +38,10 @@ function getOne(req, res){
 }
 
 module.exports = {
+    addCustomer : addCustomer,
     processAddCustomer : processAddCustomer,
     processUpdateCustomer : processUpdateCustomer,
     customersList : customersList,
-    getOne: getOne,
+    getOne: getOne
 };
 

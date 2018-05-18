@@ -12,7 +12,7 @@ router.get('/', mainController.home);
 router.put('/', bodyParserJson, mainController.test);
 
 //Bill Controller
-router.get('/bill', billController.addBill)
+router.get('/bill', billController.addBill);
 router.post('/bill',billController.processAddBill);
 router.get('/bills/in', billController.listInBill);
 router.get('/bills/out', billController.listOutBill);
@@ -25,6 +25,7 @@ router.put('/update_bill', billController.processUpdateBill);
 //Customer Controller
 router.get('/customers', customerController.customersList);
 router.get('/customer/:id', customerController.getOne);
+router.get('/add_customer', customerController.addCustomer);
 router.post('/add_customer', customerController.processAddCustomer);
 router.put('/update_customer', customerController.processUpdateCustomer);
 
