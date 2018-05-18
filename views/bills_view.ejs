@@ -74,7 +74,7 @@
                         </tbody>
                     </table>
                 </form>
-                <button type="button" class="btn btn-success" onclick="createForm('billContacts', fields)">Ajouter un contact</button>
+                <button type="button" id="addContactForm" class="btn btn-success" onclick="createForm('billContacts', fields)">Ajouter un contact</button>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -153,6 +153,7 @@
     }
 
     function createForm(elementId, arrayField){
+        document.getElementById('addContactForm').setAttribute("disabled", "");
         let tr = document.getElementById(elementId).appendChild(document.createElement('tr'));
         arrayField.forEach((field, key)=>{
             let td = document.createElement('td');
@@ -183,6 +184,7 @@
     }
 
     function addContact(){
+        document.getElementById('addContactForm').removeAttribute("disabled");
         let data = $('#addContact').serializeArray();
         let contact = {
             name: data[0].value,

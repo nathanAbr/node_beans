@@ -43,10 +43,11 @@ router.get('/update_bill/:id', restrict, billController.updateOneBill);
 router.put('/update_bill', restrict, billController.processUpdateBill);
 
 //Customer Controller
-router.get('/customers', restrict, customerController.customersList);
-router.get('/customer/:id', restrict, customerController.getOne);
-router.post('/add_customer', restrict, customerController.processAddCustomer);
-router.put('/update_customer', restrict, customerController.processUpdateCustomer);
+router.get('/customers', customerController.customersList);
+router.get('/customer/:id', customerController.getOne);
+router.get('/add_customer', customerController.addCustomer);
+router.post('/add_customer', customerController.processAddCustomer);
+router.put('/update_customer', customerController.processUpdateCustomer);
 
 //Provider Controller
 router.get('/providers', restrict, providerController.providersList);
