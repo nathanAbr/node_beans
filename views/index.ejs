@@ -1,19 +1,21 @@
 <%- include partials/head.ejs %>
 <%- include partials/header.ejs %>
 
-<!-- write content here -->
-<script>
-    $.ajax({
-        type: 'PUT',
-        dataType: 'json',
-        url: '/',
-        data: {contacts:[{name:'toto'},{name:"tata"}]},
-        success: (result)=>{
-            console.log(result);
-        },
-        error: (err)=>{
-            console.log(err);
-        }
-    });
-</script>
+		<div id="page_content" class="container">
+             <form style="max-width:300px; margin: auto;" action="/login" class="form-signin" method="post">
+                <fieldset><legend class="alert alert-info">Log in</legend>
+                <label for="inputUsername" class="sr-only">User name</label>
+                <input name="username" type="text" id="inputUsername" class="form-control" placeholder="User name" required autofocus>
+                <label for="inputPassword" class="sr-only">Password</label>
+                <input name="password" type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+                <div class="checkbox">
+                    <label>
+                        <input name="remember" type="checkbox" value="remember-me"> Remember me
+                    </label>
+                </div>
+                <button class="btn btn-lg btn-success btn-block" type="submit">Log in</button>
+            </form>
+			<p><b>Don't have an account yet? <a href="/users/signup">Register instead</a></b></p>
+        </div>
+
 <%- include partials/footer.ejs %>
