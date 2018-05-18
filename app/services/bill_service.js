@@ -48,6 +48,7 @@ function listOutBill(year) {
 
 // Create a bill
 function processAddBill(params){
+    
     let bill = new Bill(params);
 	return bill.save();
 }

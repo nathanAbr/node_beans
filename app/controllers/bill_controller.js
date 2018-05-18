@@ -77,7 +77,8 @@ function addBill(req,res){
 }
 
 function processAddBill(req, res) {    
-    let params = req.body;
+    let params = req.body.data;
+    //req.body.recursif
     
    console.log('params: '+JSON.stringify(params));
     if (params.action_date) params.action_date = new Date(params.action_date);

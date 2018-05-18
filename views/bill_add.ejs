@@ -1,6 +1,9 @@
 <%- include partials/head.ejs %>
 <%- include partials/header.ejs %>
 <script src="js/add_bill.js"></script>
+<script>
+
+</script>
   <h1>
     <%= title %>
   </h1>
@@ -18,8 +21,13 @@
     }
   </style>
 
-  <div id="addBillForm" name="addBill">
-
+  <form="addBillForm" name="addBill">
+    <div id="alerte" style="color: red; font-size: 14px; font-weight: bold;"></div>
+    <div class="form-group row">
+      <label for="recursif">Recursif</label>
+      <input type="checkbox"  name="recursif" id="recursif">
+   
+    </div>
     <div class="form-group row">
       <label for="customer" class="col-2 col-form-label">Client : </label>
       <div class="col-10">
@@ -47,14 +55,14 @@
     <div class="form-group row">
       <label for="designation" class="col-2 col-form-label">Désignation :</label>
       <div class="col-10">
-        <input type="text" name="designation" id="designation" class="form-control" />
+        <input type="text" name="designation" id="designation" class="form-control" required/>
       </div>
 
     </div>
     <div class="form-group row">
       <label for="amount" class="col-2 col-form-label">Montant :</label>
       <div class="col-10">
-        <input type="number" name="amount" id="amount" class="form-control" />
+        <input type="number"step="0.1" min="0" name="amount" id="amount" class="form-control" />
       </div>
     </div>
 
@@ -81,11 +89,12 @@
   
 
     <div class="buttons">
-      <button id="send" class="btn btn-success">Enregistrer</button>
+      <button id="send" class="btn btn-success">Enregistrer</button> 
+      <!--input type="submit" value="Enregistrer" id="send" class="btn btn-success"/-->
       <button class="btn btn-danger">Annuler</button>
     </div>
 
 
-  </div>
+  </form>
 
   <%- include partials/footer.ejs %>
