@@ -9,7 +9,7 @@ let recap = {};
 let range;
 
 function listInBill(req, res) {
-    if(typeof req.get("year") !== 'undefined' && req.get("year") !== "" && req.get("year") !== null) range = req.get("year");
+    if(typeof req.query.year !== 'undefined' && req.query.year !== "" && req.query.year !== null) range = req.query.year;
     else range = currentYear;
     recap = services.recapInBills(range).then((data)=>{
         recap = data;
@@ -22,17 +22,24 @@ function listInBill(req, res) {
 }
 
 function listOutBill(req, res) {
-    if(typeof req.get("year") !== 'undefined' && req.get("year") !== "" && 
-       req.get("year") !== null) range = req.get("year");
+    if(typeof req.query.year !== 'undefined' && req.query.year !== "" &&
+        req.query.year !== null) range = req.query.year;
     else range = currentYear;
     services.recapOutBills(range).then((data)=>{
-        recap.total = data[0].totalAmount;
-        recap.count = data[0].count;
-        recap.year = data[0].year;
-        console.log('recapOut: '+JSON.stringify(recap));
-        services.listOutBill(range).then((bills)=>{
-            res.render('bills_view', {title:"Factures sortantes", bills:bills, recap: recap});
-        });
+        console.log(data);
+        if(data.length > 0) {
+            recap.total = data[0].totalAmount;
+            recap.count = data[0].count;
+            recap.year = data[0].year;
+            console.log('recapOut: ' + JSON.stringify(recap));
+            services.listOutBill(range).then((bills) => {
+                res.render('bills_view', {title: "Factures sortantes", bills: bills, recap: recap});
+            });
+        } else {
+            services.listOutBill(range).then((bills) => {
+                res.render('bills_view', {title: "Factures sortantes", bills: bills});
+            });
+        }
     });
     
     
