@@ -128,7 +128,7 @@
             let billContacts = "";
             if(typeof data.contacts !== 'undefined') {
                 data.contacts.forEach((contact, key) => {
-                    billContacts =
+                    billContacts +=
                         "<tbody><tr>" +
                         "<td>" + setUndefined(contact.name) + "</td>" +
                         "<td>" + setUndefined(contact.tel) + "</td>" +
@@ -210,7 +210,7 @@
             url: path,
             data: JSON.stringify(company),
             success: (result)=>{
-                console.log(result);
+                getContact(result._id);
             },
             error: (err)=>{
                 console.log(err);

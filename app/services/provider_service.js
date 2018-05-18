@@ -12,7 +12,7 @@ function processUpdateProvider(params) {
             $set: { 
                 name : params.name
                 , address: params.address
-                , contacts : params.contacts
+                , "contacts.$[]" : params.contacts
                 , tel : params.tel
                 , mobile : params.mobile
             }

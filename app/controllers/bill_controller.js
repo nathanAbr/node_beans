@@ -6,35 +6,38 @@ const errorHandler = require('../error_management');
 let currentDate = new Date();
 let currentYear = currentDate.getFullYear();
 let recap = {};
+let range;
+
 function listInBill(req, res) {
-    
-    if(typeof req.get("year") !== 'undefined' && req.get("year") !== "" && req.get("year") !== null){
-        recap = services.recapInBills(req.get("year"));
-        services.listInBill(req.get("year")).then((bills)=>{
+    if(typeof req.get("year") !== 'undefined' && req.get("year") !== "" && req.get("year") !== null) range = req.get("year");
+    else range = currentYear;
+    recap = services.recapInBills(range).then((data)=>{
+        recap = data;
+        console.log('recapIn: '+JSON.stringify(recap));
+        
+        services.listInBill(range).then((bills)=>{
             res.render('bills_view', {title:"Factures entrantes",bills:bills, recap: recap});
         });
-    } else {
-        recap = services.recapInBills(currentYear);
-        services.listInBill(currentYear).then((bills)=>{
-            res.render('bills_view', {title:"Factures entrantes", bills:bills, recap: recap});
-        });
-    }
+    });
 }
 
 function listOutBill(req, res) {
     if(typeof req.get("year") !== 'undefined' && req.get("year") !== "" && 
-       req.get("year") !== null){
-        recap = services.recapOutBills(req.get("year"));
-        services.listOutBill(req.get("year")).then((bills)=>{
-            res.render(res, 'bills_view', {title:"Factures sortantes", bills:bills, recap: recap});
-        });
-    } else {
-        recap = services.recapOutBills(currentYear);
-        services.listOutBill(currentYear).then((bills)=>{
+       req.get("year") !== null) range = req.get("year");
+    else range = currentYear;
+    services.recapOutBills(range).then((data)=>{
+        recap.total = data[0].totalAmount;
+        recap.count = data[0].count;
+        recap.year = data[0].year;
+        console.log('recapOut: '+JSON.stringify(recap));
+        services.listOutBill(range).then((bills)=>{
             res.render('bills_view', {title:"Factures sortantes", bills:bills, recap: recap});
         });
-    }
+    });
+    
+    
 }
+
 /*
     montre le formulaire d'ajout d'une facture
 */

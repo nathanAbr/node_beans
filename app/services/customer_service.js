@@ -13,12 +13,12 @@ function processUpdateCustomer(params) {
             $set: { 
                 name : params.name
                 , address: params.address
-                , contacts : params.contacts
                 , tel : params.tel
                 , mobile : params.mobile
-            }
-        }, { 
-        new: true 
+            },
+            $addToSet : {contacts: { $each: params.contacts}}
+        }, {
+        multi: true,
     });
 }
 
