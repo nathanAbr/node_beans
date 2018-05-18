@@ -7,6 +7,7 @@
         <p>Réglé: 50000</p>
         <p>A régler: 25000</p></div>
     <% } else { %>
+        <% if (typeof recap !== 'undefined') { %>
         <% if (recap.total){ %>
         <div>
             <table class="table table-bordered">
@@ -25,4 +26,4 @@
             <p>Encours: 25000</p>
             <p>Réglé: 50000</p>
             <p>A réaliser: 25000</p></div>
-<% } } } %>
+<% } } } } %>
