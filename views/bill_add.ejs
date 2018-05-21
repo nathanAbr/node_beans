@@ -3,13 +3,39 @@
 <script src="js/add_bill.js"></script>
   <div id="addBillForm" name="addBill">
 
+<script>
+
+</script>
+  <h1>
+    <%= title %>
+  </h1>
+  <style>
+    #addBillForm{
+      width: 70%;
+      margin: 1em auto;
+    }
+    .buttons{
+      display: flex;
+      justify-content: flex-end;
+    }
+    #send{
+      margin-right: 1em;
+    }
+  </style>
+
+    <div id="alerte" style="color: red; font-size: 14px; font-weight: bold;"></div>
+    <div class="form-group row">
+      <label for="recursif">Recursif</label>
+      <input type="checkbox"  name="recursif" id="recursif">
+   
+    </div>
     <div class="form-group row">
       <label for="customer" class="col-2 col-form-label">Client : </label>
       <div class="col-10">
         <%- include partials/selectCustomer.ejs %>
       </div>
     </div>
-    <div class="form-group row">
+    <div class="form-group row" disable ="true">
       <label for="provider" class="col-2 col-form-label">Fournisseur</label>
       <div class="col-10">
         <%- include partials/selectProvider.ejs %>
@@ -20,9 +46,9 @@
       <label for="type" class="col-2 col-form-label">Type :</label>
       <div class="col-10">
         <select name="type" id="type" class="form-control">
+          <option></option>          
           <option value="Formation">Formation</option>
           <option value="Dev">Développement</option>
-          <option></option>
         </select>
       </div>
 
@@ -30,16 +56,23 @@
     <div class="form-group row">
       <label for="designation" class="col-2 col-form-label">Désignation :</label>
       <div class="col-10">
-        <input type="text" name="designation" id="designation" class="form-control" />
+        <input type="text" name="designation" id="designation" class="form-control" required/>
       </div>
 
     </div>
     <div class="form-group row">
       <label for="amount" class="col-2 col-form-label">Montant :</label>
       <div class="col-10">
-        <input type="text" name="amount" id="amount" class="form-control" />
+        <input type="number"step="0.1" min="0" name="amount" id="amount" class="form-control" />
       </div>
     </div>
+
+    <div class="form-group row">
+        <label for="vat" class="col-2 col-form-label">TVA :</label>
+        <div class="col-10">
+          <input type="number" name="vat" id="vat" class="form-control" />
+        </div>
+      </div>
     <div class="form-group row">
       <label for="billing_date" class="col-2 col-form-label">Date de facturation :</label>
 
@@ -53,8 +86,12 @@
         <input type="date" id="payment_date" name="payment_date" class="form-control" />
       </div>
     </div>
+
+  
+
     <div class="buttons">
-      <button id="send" class="btn btn-success">Enregistrer</button>
+      <button id="send" class="btn btn-success">Enregistrer</button> 
+      <!--input type="submit" value="Enregistrer" id="send" class="btn btn-success"/-->
       <button class="btn btn-danger">Annuler</button>
     </div>
 
