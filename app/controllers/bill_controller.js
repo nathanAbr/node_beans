@@ -28,9 +28,15 @@ function listOutBill(req, res) {
     services.recapOutBills(range).then((data)=>{
         console.log(data);
         if(data.length > 0) {
+            console.log(data[0].vat_amount);
+            recap.tva = data[0].vat_amount;
             recap.total = data[0].totalAmount;
             recap.count = data[0].count;
             recap.year = data[0].year;
+            recap.day = data[0].day_number;
+            recap.payed = data[0].payed;
+            recap.due = data[0].due;
+            recap.todo = data[0].todo;
             console.log('recapOut: ' + JSON.stringify(recap));
             services.listOutBill(range).then((bills) => {
                 res.render('bills_view', {title: "Factures sortantes", bills: bills, recap: recap});

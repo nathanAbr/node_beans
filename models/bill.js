@@ -5,6 +5,7 @@ billsSchema = new mongoose.Schema({
     provider: {type: mongoose.Schema.ObjectId, ref:'provider'},
     type: {type:String, enum: ['Formation', 'Dev']},
     designation: String,
+    day_number: Number,
     amount: {type: Number, min:[0,'Cant be neg!']},
     vat: {type:Number, min:0, max:25},
     action_date: Date,
