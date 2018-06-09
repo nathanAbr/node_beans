@@ -78,7 +78,20 @@ function addBill(req,res){
 
 function processAddBill(req, res) {    
     let params = req.body.data;
-    //req.body.recursif
+    let recursif = req.body.recursif;
+    if(recursif = true){
+        var compteur = 0;
+        var dateFirstBill =  $("#billing_date").val();
+        var monthFirstBill = dateFirstBill.getMonth();
+        while(compteur <25){
+            monthFirstBill++;
+
+            if(monthFirstBill = 12){
+                
+          }
+  
+        }
+      }
     
    console.log('params: '+JSON.stringify(params));
     if (params.action_date) params.action_date = new Date(params.action_date);
