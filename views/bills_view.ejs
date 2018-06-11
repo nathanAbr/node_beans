@@ -1,44 +1,51 @@
 <%- include partials/head.ejs %>
 <%- include partials/header.ejs %>
 <%- include partials/recap.ejs %>
-
-<table class="table table-hover table-dark">
-    <thead class="thead-light">
-    <tr>
-        <th scope="col">#</th>
-        <th scope="col">Désignation</th>
-        <th scope="col">Montant</th>
-        <th scope="col">Date de prestation</th>
-        <th scope="col">Date de règlement</th>
-        <th scope="col">Date de relance</th>
-        <th scope="col">Contact</th>
-    </tr>
-    </thead>
-    <tbody>
-    <% bills.forEach((bill, key) => { %>
-    <tr>
-        <td><%= key %></td>
-        <td><%= bill.designation %></td>
-        <td><%= bill.amount %> €</td>
-        <td><% if(typeof bill.action_date !== 'undefined'){ %><%= bill.action_date.getDate() %>/<% if(bill.action_date.getMonth() + 1  < 10){ %>0<%}%><%= bill.action_date.getMonth() + 1 %>/<%= bill.action_date.getFullYear() %><% } %></td>
-        <td><% if(typeof bill.payment_date !== 'undefined'){ %><%= bill.payment_date.getDate() %>/<% if(bill.payment_date.getMonth() + 1  < 10){ %>0<%}%><%= bill.payment_date.getMonth() + 1 %>/<%= bill.payment_date.getFullYear() %><% } %></td>
-        <td><% if(typeof bill.recovery_date !== 'undefined'){ %><%= bill.recovery_date.getDate() %>/<% if(bill.recovery_date.getMonth() + 1  < 10){ %>0<%}%><%= bill.recovery_date.getMonth() + 1 %>/<%= bill.recovery_date.getFullYear() %><% } %></td>
-        <td>
-            <% if(typeof bill.customer != 'undefined'){ %>
-            <button onclick="getContact('<%= bill.customer._id %>')" type="button" class="btn btn-primary" data-toggle="modal" data-target="#contactModal">
-                Voir
-            </button>
-            <% } %>
-            <% if(typeof bill.provider != 'undefined'){ %>
-            <button onclick="getContact('<%= bill.provider._id %>')" type="button" class="btn btn-primary" data-toggle="modal" data-target="#contactModal">
-                Voir
-            </button>
-            <% } %>
-        </td>
-    </tr>
-    <% }); %>
-    </tbody>
-</table>
+<div id="yearChanger" class="row">
+    <div class="col-1 prec-block">
+        <a id="prec" onclick="precYear()"><</a>
+    </div>
+        <table class="table table-hover table-dark col-10">
+            <thead class="thead-light">
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Désignation</th>
+                <th scope="col">Montant</th>
+                <th scope="col">Date de prestation</th>
+                <th scope="col">Date de règlement</th>
+                <th scope="col">Date de relance</th>
+                <th scope="col">Contact</th>
+            </tr>
+            </thead>
+            <tbody>
+            <% bills.forEach((bill, key) => { %>
+            <tr>
+                <td><%= key %></td>
+                <td><%= bill.designation %></td>
+                <td><%= bill.amount %> €</td>
+                <td><% if(typeof bill.action_date !== 'undefined'){ %><%= bill.action_date.getDate() %>/<% if(bill.action_date.getMonth() + 1  < 10){ %>0<%}%><%= bill.action_date.getMonth() + 1 %>/<%= bill.action_date.getFullYear() %><% } %></td>
+                <td><% if(typeof bill.payment_date !== 'undefined'){ %><%= bill.payment_date.getDate() %>/<% if(bill.payment_date.getMonth() + 1  < 10){ %>0<%}%><%= bill.payment_date.getMonth() + 1 %>/<%= bill.payment_date.getFullYear() %><% } %></td>
+                <td><% if(typeof bill.recovery_date !== 'undefined'){ %><%= bill.recovery_date.getDate() %>/<% if(bill.recovery_date.getMonth() + 1  < 10){ %>0<%}%><%= bill.recovery_date.getMonth() + 1 %>/<%= bill.recovery_date.getFullYear() %><% } %></td>
+                <td>
+                    <% if(typeof bill.customer != 'undefined'){ %>
+                    <button onclick="getContact('<%= bill.customer._id %>')" type="button" class="btn btn-primary" data-toggle="modal" data-target="#contactModal">
+                        Voir
+                    </button>
+                    <% } %>
+                    <% if(typeof bill.provider != 'undefined'){ %>
+                    <button onclick="getContact('<%= bill.provider._id %>')" type="button" class="btn btn-primary" data-toggle="modal" data-target="#contactModal">
+                        Voir
+                    </button>
+                    <% } %>
+                </td>
+            </tr>
+            <% }); %>
+            </tbody>
+        </table>
+    <div class="col-1 next-block">
+        <a id="next" onclick="nextYear()">></a>
+    </div>
+</div>
 
 <div class="modal fade bd-example-modal-lg" id="contactModal" tabindex="-1" role="dialog" aria-labelledby="contactModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
@@ -218,6 +225,80 @@
                 console.log(err);
             }
         });
+    }
+
+    function nextYear(){
+        let url = location.href;
+        let stringParams = url.split("?");
+        console.log(stringParams);
+        if(stringParams[1]){
+            let params = stringParams[1].split("&");
+            let hasYear = false;
+            for(var i = 0;i<params.length;i++){
+                if(params[i].match(/.*year=.*/)){
+                    hasYear = true;
+                    let param = params[i].split("=");
+                    param[1]++;
+                    param = param.join("=");
+                    params[i] = param;
+                    break;
+                }
+            }
+            if(hasYear) {
+                params = params.join("&");
+                stringParams[1] = params;
+                window.location.href = stringParams.join("?");
+            } else {
+                let year = new Date();
+                year = year.getFullYear() + 1;
+                params[params.length] = "year="+year;
+                params = params.join("&");
+                stringParams[1] = params;
+                window.location.href = stringParams.join("?");
+            }
+        } else {
+            let year = new Date();
+            year = year.getFullYear() + 1;
+            stringParams[1] = "year="+year;
+            window.location.href = stringParams.join("?");
+        }
+    }
+
+    function precYear(){
+        let url = location.href;
+        let stringParams = url.split("?");
+        console.log(stringParams);
+        if(stringParams[1]){
+            let params = stringParams[1].split("&");
+            let hasYear = false;
+            for(var i = 0;i<params.length;i++){
+                if(params[i].match(/.*year=.*/)){
+                    hasYear = true;
+                    let param = params[i].split("=");
+                    param[1]--;
+                    param = param.join("=");
+                    params[i] = param;
+                    break;
+                }
+            }
+            if(hasYear) {
+                params = params.join("&");
+                stringParams[1] = params;
+                window.location.href = stringParams.join("?");
+            } else {
+                let year = new Date();
+                year = year.getFullYear() - 1;
+                params[params.length] = "year="+year;
+                params = params.join("&");
+                stringParams[1] = params;
+                window.location.href = stringParams.join("?");
+            }
+        } else {
+            let year = new Date();
+            year = year.getFullYear() - 1;
+            stringParams[1] = "year="+year;
+            window.location.href = stringParams.join("?");
+        }
     }
 </script>
 

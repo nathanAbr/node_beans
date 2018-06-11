@@ -29,3 +29,11 @@ a {
 #send{
   margin-right: 1em;
 }
+.prec-block{
+    text-align: left;
+    font-size: 40px;
+}
+.next-block{
+    text-align: right;
+    font-size: 40px;
+}
