@@ -1,0 +1,8 @@
+<select class="form-control" id="selectBill" class="selectBill">
+    <option value=""></option>
+	<% for(i in bills) { %>
+            <option id="<%= bills[i]._id %>" value="<%= bills[i]._id %>">
+                <%= bills[i].designation %>
+            </option>$
+	<% } %>
+</select>

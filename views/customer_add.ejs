@@ -1,0 +1,64 @@
+<%- include partials/head.ejs %>
+<%- include partials/header.ejs %>
+  <div id="addCustomerForm" name="addCustomer">
+    <div class="form-group row">
+      <label for="name" class="col-2 col-form-label">Nom :</label>
+      <div class="col-10">
+        <input type="text" name="name" id="name" class="form-control" />
+      </div>
+    </div>
+    <div class="form-group row">
+        <label for="road" class="col-2 col-form-label">Rue :</label>
+        <div class="col-10">
+          <input type="text" name="road" id="road" class="form-control" />
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="zip" class="col-2 col-form-label">Code Postal :</label>
+        <div class="col-10">
+          <input type="text" name="zip" id="zip" class="form-control" />
+        </div>
+      </div>
+    <div class="form-group row">
+        <label for="city" class="col-2 col-form-label">Ville :</label>
+        <div class="col-10">
+          <input type="text" name="city" id="city" class="form-control" />
+        </div>
+      </div>
+    <div class="form-group row">
+        <label for="country" class="col-2 col-form-label">Pays :</label>
+        <div class="col-10">
+          <input type="text" name="country" id="country" class="form-control" />
+        </div>
+    </div>
+    <div class="buttons">
+      <button id="send" class="btn btn-success">Enregistrer</button>
+      <button class="btn btn-danger">Annuler</button>
+    </div>
+  </div>
+  <%- include partials/footer.ejs %>
+
+  <script>
+    $('#send').on('click', function(object) {
+        var URL = '/add_customer/';
+        var address = {
+            "road" : document.getElementById('road').value,
+            "zip" : document.getElementById('zip').value,
+            "city" : document.getElementById('city').value,
+            "country": document.getElementById('country').value
+        };
+        var dataObject = { 
+            "name" : document.getElementById('name').value,
+            "address" : address
+        };
+        $.ajax({
+            type: 'POST',
+            url: URL,
+            contentType: 'application/json',
+            data: JSON.stringify(dataObject),
+            success: function(result) {
+               window.location.href = "/add_customer/";
+            }
+        });
+    });
+  </script>

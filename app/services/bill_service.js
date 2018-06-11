@@ -3,6 +3,14 @@ const Bill =  require('../../models/bill'),
     Provider = require('../../models/company').providerModel,
     mongoose = require('mongoose');
 
+function billSelect() {
+    return Bill.find({},{designation:1});
+}
+
+function findOneBill(id) {
+    return Bill.find({_id: id});
+} 
+
 function listInBill(year) {
     firstDate = new Date(year, 0, 1);
     lastDate = new Date(year, 11, 31);
@@ -10,28 +18,25 @@ function listInBill(year) {
         "customer":{$exists:false},
         "provider":{$exists:true},
         "action_date": {$gt: firstDate, $lt: lastDate}
-    }).populate("provider");
+    }).populate("provider").exec();
 }
 
-function updateBill(req, res) {
-    Bill.findByIdAndUpdate(
-        req.body.id, { 
+function processUpdateBill(params) {
+    billing_date = new Date(params.billing_date);
+    payment_date = new Date(params.payment_date);
+    return Bill.findByIdAndUpdate(
+        params._id, { 
             $set: { 
-                customer : req.body.customer
-                , type: req.body.type
-                , designation : req.body.designation
-                , amount : req.body.amount
-                , vat : req.body.vat
-                , action_date : req.body.action_date
-                , billing_date : req.body.billing_date
-                , payment_date : req.body.payment_date
-                , recovery_date : req.body.recovery_date
+                customer : params.customer
+                , type: params.type
+                , designation : params.designation
+                , amount : params.amount
+                , vat : params.vat
+                , billing_date : billing_date
+                , payment_date : payment_date
             }
         }, { 
         new: true 
-    }, function (err, doc) {
-	  if (err) return console.log(err);
-	  res.send(doc);
     });
 }
 
@@ -43,7 +48,7 @@ function listOutBill(year) {
         "provider":{$exists:false},
         "customer":{$exists:true},
         "action_date": {$gt: firstDate, $lt: lastDate}
-    }).populate("customer");
+    }).populate("customer").exec();
 }
 
 // Create a bill
@@ -57,30 +62,122 @@ function processAddBillRecursive(params){
     return Bill.insertMany(bills);
 }
 
-function recapInBills(){
-    Bill.aggregate([
-        {"$match":{
-            "provider":{$exists:false},
-            "customer":{$exists:true}
+function calcCustomerVAT(year){
+    const vat =  mongoose.model('vat',new mongoose.Schema({vat_amount:Number,amount:Number,vat:Number, alltaxes:Number}));
+    firstDate = new Date(year, 0, 1);
+    lastDate = new Date(year, 11, 31);
+    return Bill.aggregate([
+        {
+            "$match":{
+                "provider":{$exists:false},
+                "customer":{$exists:true},
+                "action_date": {$gt: firstDate, $lt: lastDate},
+                "vat":{$gt:0}
             }
-        }
-    ]).then((err,result)=>{
-        if(err) return console.log(err);
-        console.log(result);
-        return result;
-    })
+        },{
+            "$project": {
+                vat_amount:{
+                    $divide:[{$multiply:[
+                        "$amount",
+                        "$vat"
+                    ]},100]
+                },
+                amount:1, 
+                    vat:1
+            }
+        },{
+            "$project": {
+                amount:1, vat:1, vat_amount:1, alltaxes:{
+                    $add:[
+                        "$vat_amount",
+                        "$amount"
+                    ]
+                }
+            }
+        },
+        {
+            "$out":"vat"
+        }]).exec(()=>{
+        vat.aggregate([{$project:{"total_vat":{}}}])
+    });
 }
 
-function recapOutBills(){
-    return console.log("todo!");
+
+function recapInBills(year){
+    console.log("todo: bill_service/recapInBills!");
+    return new Promise(resolve => {
+        resolve({total : 0})
+    })
 }
+function recapOutBills(year){
+    //calcCustomerVAT(year);
+    firstDate = new Date(year, 0, 1);
+    lastDate = new Date(year, 11, 31);
+    return Bill.aggregate([
+        {
+            "$match":{
+                "provider":{$exists:false},
+                "customer":{$exists:true},
+                "action_date": {$gt: firstDate, $lt: lastDate},
+            }
+        },
+        {
+            "$group": {
+                _id: {year: {$year: "$action_date"}},
+                totalAmount: {$sum: "$amount"},
+                day_number: {$sum: "$day_number"},
+                count: {$sum: 1},
+                payed: {
+                    $sum: {
+                        $cond: [{
+                            $gt: ["$payment_date", null]
+                        }, "$amount", 0]
+                    }
+                },
+                due: {
+                    $sum: {
+                        $cond: [{
+                            $lt: ["$payment_date", null]
+                        }, "$amount", 0]
+                    }
+                },
+                todo: {
+                    $sum: {
+                        $cond: [{
+                            $lt: ["$billing_date", null]
+                        }, "$amount", 0]
+                    }
+                },
+            },
+        },
+        {
+            "$project": {
+                vat_amount:{
+                    $divide:[{$multiply:[
+                            "$amount",
+                            "$vat"
+                        ]},100]
+                },
+                todo: 1,
+                due: 1,
+                payed: 1,
+                totalAmount: 1,
+                count: 1,
+                day_number: 1,
+            }
+        },
+    ]).exec();
+}
+
 module.exports = {
+    findOneBill: findOneBill,
+    billSelect: billSelect,
     listInBill: listInBill,
     processAddBill : processAddBill,
     processAddBillRecursive : processAddBillRecursive,
     listOutBill: listOutBill,
-    updateBill : updateBill,
+    processUpdateBill : processUpdateBill,
     recapInBills: recapInBills,
-    recapOutBills: recapOutBills
+    recapOutBills: recapOutBills,
 };
 

@@ -1,0 +1,156 @@
+<%- include partials/head.ejs %>
+<%- include partials/header.ejs %>
+  <h1>
+    <%= title %>
+  </h1>
+  <style>
+    #updateBillForm{
+      width: 70%;
+      margin: 1em auto;
+    }
+    .buttons{
+      display: flex;
+      justify-content: flex-end;
+    }
+    #send{
+      margin-right: 1em;
+    }
+  </style>
+  <div id="updateBillForm" name="updateBill">
+    <div class="form-group row">
+      <label for="bill" class="col-2 col-form-label">Facture : </label>
+      <div class="col-10">
+        <%- include partials/selectBill.ejs %>
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="customer" class="col-2 col-form-label">Client : </label>
+      <div class="col-10">
+        <%- include partials/selectCustomer.ejs %>
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="provider" class="col-2 col-form-label">Fournisseur</label>
+      <div class="col-10">
+        <%- include partials/selectProvider.ejs %>
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="type" class="col-2 col-form-label">Type :</label>
+      <div class="col-10">
+        <select name="type" id="type" class="form-control">
+          <option id="type_none" value=""></option>  
+          <option id="Formation" value="Formation">Formation</option>
+          <option id="Dev" value="Dev">Développement</option>
+          <option></option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="designation" class="col-2 col-form-label">Désignation :</label>
+      <div class="col-10">
+        <input type="text" name="designation" id="designation" class="form-control" />
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="amount" class="col-2 col-form-label">Montant :</label>
+      <div class="col-10">
+        <input type="text" name="amount" id="amount" class="form-control" />
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="billing_date" class="col-2 col-form-label">Date de facturation :</label>
+      <div class="col-10">
+        <input type="date" id="billing_date" name="billing_date" class="form-control" />
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="payment_date" class="col-2 col-form-label">Date de payement :</label>
+      <div class="col-10">
+        <input type="date" id="payment_date" name="payment_date" class="form-control" />
+      </div>
+    </div>
+    <div class="buttons">
+      <button id="send" class="btn btn-success">Enregistrer</button>
+      <button class="btn btn-danger">Annuler</button>
+    </div>
+  </div>
+  <%- include partials/footer.ejs %>
+<script>
+    function pad(s) { return (s < 10) ? '0' + s : s; }
+
+
+    $('#send').on('click', function(object) {
+        var URL = '/update_bill/';
+        var customer = $("#customer_select").find('option:selected').attr('id');
+        if(customer == 'customer_none') customer = "";
+        var provider = $("#provider_select").find('option:selected').attr('id');
+        if(provider == 'provider_none') provider = "";
+        var billing_date = new Date(document.getElementById('billing_date').value);
+        var payment_date = new Date(document.getElementById('payment_date').value);
+        if()
+        var dataObject = {
+            "_id" : $("#selectBill").find('option:selected').attr('id'),
+            "designation" : document.getElementById('designation').value,
+            "amount" : document.getElementById('amount').value,
+            "billing_date" : billing_date,
+            "payment_date" : payment_date,
+            "customer": customer,
+            "provider": provider,
+            "type": $("#type").find('option:selected').attr('id')
+        };
+        $.ajax({
+            type: 'PUT',
+            url: URL,
+            contentType: 'application/json',
+            data: JSON.stringify(dataObject),
+            success: function(result) {
+               window.location.href = "/update_bill/";
+            }
+        });
+    });
+    $('#selectBill').on('change', function(object) {
+        $.get('/update_bill/' + this.value, function(data) {
+            console.log(data);
+            if(data.bill != null) {
+                document.getElementById('designation').value = data.bill["0"].designation;
+                document.getElementById('amount').value = data.bill["0"].amount;
+                billing_date = new Date(data.bill["0"].billing_date);
+                payment_date = new Date(data.bill["0"].payment_date);
+                document.getElementById('payment_date').value = [payment_date.getFullYear(), pad(payment_date.getMonth()+1), pad(payment_date.getDate())].join('-').toString();
+                document.getElementById('billing_date').value = [billing_date.getFullYear(), pad(billing_date.getMonth()+1), pad(billing_date.getDate())].join('-').toString();
+                $('#type option:selected').removeAttr('selected');
+                document.getElementById(data.bill["0"].type).setAttribute('selected', 'selected'); 
+                
+                if(document.getElementById(data.bill["0"].customer) != null) {
+                    $('#customer_select option:selected').removeAttr('selected');
+                    document.getElementById(data.bill["0"].customer).setAttribute('selected', 'selected'); 
+                }
+                else {
+                    $('#customer_select option:selected').removeAttr('selected');
+                    document.getElementById("customer_none").setAttribute('selected', 'selected');
+                }
+                if(document.getElementById(data.bill["0"].provider) != null) {
+                    $('#provider_select option:selected').removeAttr('selected');
+                    document.getElementById(data.bill["0"].provider).setAttribute('selected', 'selected'); 
+                }
+                else {
+                    $('#provider_select option:selected').removeAttr('selected');
+                    document.getElementById("provider_none").setAttribute('selected', 'selected');
+                }
+            } 
+            else {
+                document.getElementById('designation').value = "";
+                document.getElementById('amount').value = "";
+                document.getElementById('payment_date').value = "";
+                document.getElementById('billing_date').value = "";
+                $('#type option:selected').removeAttr('selected');
+                document.getElementById("type_none").setAttribute('selected', 'selected');
+                $('#customer_select option:selected').removeAttr('selected');
+                document.getElementById("customer_none").setAttribute('selected', 'selected');
+                $('#provider_select option:selected').removeAttr('selected');
+                document.getElementById("provider_none").setAttribute('selected', 'selected');
+            }
+        });
+    });
+</script>

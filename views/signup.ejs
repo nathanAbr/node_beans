@@ -1,0 +1,24 @@
+
+		<% include partials/head %>
+            
+  <% include partials/header %>
+	<div class="container">
+        
+        <% if((typeof success != 'undefined')&&(success="true")) {%><a href="/">Now, please login !</a><% } else {%>
+		<form id="new_player_form" action="/signup" class="form-signin" method="post">
+			<!--h2 class="form-signin-heading">Please sign up</h2-->
+            <fieldset id="new_player_fieldset"><legend class="alert alert-info">Sign up</legend>
+			<label for="email" class="sr-only">Email address</label>
+			<input name="email" type="email" id="email" class="form-control" placeholder="Email address" required autofocus>
+			<label for="username" class="sr-only">User name</label>
+			<input name="username" type="text" id="username" class="form-control" placeholder="User name" required>
+			<label for="password" class="sr-only">Password</label>
+			<input name="password" data-minlength="6" type="password" id="password" class="form-control" placeholder="Password" required>
+			<button class="btn btn-lg btn-primary btn-block" type="submit">Sign up</button>
+            </fieldset>
+		</form>
+         <p><b>Already have an account ? <a href="/">Login instead</a></b></p>
+        <%}%>
+    </div> <!-- /container -->
+         
+  <% include partials/footer %>

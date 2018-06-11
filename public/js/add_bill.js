@@ -1,14 +1,14 @@
 $(() => {
   let data = {};
-  $("#customerChoice").change(() => {
-    if ($("#customerChoice").val() != "")
-      $("#providerChoice option")
+  $(".customerChoice").change(() => {
+    if ($(".customerChoice").val() != "")
+      $(".providerChoice option")
         .eq(0)
         .prop("selected", true);
   });
-  $("#providerChoice").change(() => {
-    if ($("#providerChoice").val() != "")
-      $("#customerChoice option")
+  $(".providerChoice").change(() => {
+    if ($(".providerChoice").val() != "")
+      $(".customerChoice option")
         .eq(0)
         .prop("selected", true);
   });
@@ -71,10 +71,19 @@ $(() => {
     }
     else{
       
-    }*/
 
     if($("#providerChoice").val() != ""){
       data.provider = $("#providerChoice").val();
+    }
+*/
+    if ($(".customerChoice").val() != "") {
+      data.customer = $(".customerChoice").val();
+      console.log(data.customer);
+    }
+
+    if($(".providerChoice").val() != ""){
+      console.log(data.provider);
+      data.provider = $(".providerChoice").val();
     }
     
    $.post("/bill", {recursif:recursif, data: JSON.stringify(data)}, function(data, status) {

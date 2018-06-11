@@ -1,0 +1,39 @@
+body {
+  padding: 50px;
+  font: 14px "Lucida Grande", "Helvetica", "Arial", "sans-serif";
+}
+nav > ul {width:100%;}
+.navbar-brand{padding-left: 0.5em;}
+a {
+  color: #00B7FF;
+}
+
+.active {
+    background: #00B7FF;
+    border-top-left-radius: 0.66em;
+    border-top-right-radius: 0.66em;
+    
+}
+.active > a{
+    color: white;
+}
+
+#addBillForm{
+  width: 70%;
+  margin: 1em auto;
+}
+.buttons{
+  display: flex;
+  justify-content: flex-end;
+}
+#send{
+  margin-right: 1em;
+}
+.prec-block{
+    text-align: left;
+    font-size: 40px;
+}
+.next-block{
+    text-align: right;
+    font-size: 40px;
+}

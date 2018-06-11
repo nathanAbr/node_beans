@@ -1,7 +1,8 @@
-<select class="form-control" id="providerChoice">
-	<option selected></option>
-	<% for(i in providers) { %>
-	<option value="<%= providers[i]._id %>">
+<select id="selectProvider" class="form-control">
+    <option id="provider_none" value=""></option>
+    <% for(i in providers) { %>
+	<option id="<%= providers[i]._id %>" value="<%= providers[i]._id %>">
 		<%= providers[i].name %>
 	</option>
-<% } %></select>
+    <% } %>
+</select>

@@ -1,46 +1,59 @@
 <%- include partials/head.ejs %>
 <%- include partials/header.ejs %>
-<!--%- include partials/recapOut.ejs %-->
-<table class="table table-hover table-dark">
-    <thead class="thead-light">
-    <tr>
-        <th scope="col">#</th>
-        <th scope="col">Désignation</th>
-        <th scope="col">Montant</th>
-        <th scope="col">Date de prestation</th>
-        <th scope="col">Date de règlement</th>
-        <th scope="col">Date de relance</th>
-        <th scope="col">Contact</th>
-    </tr>
-    </thead>
-    <tbody>
-    <% bills.forEach((bill, key) => { %>
-    <tr>
-        <td><%= key %></td>
-        <td><%= bill.designation %></td>
-        <td><%= bill.amount %> €</td>
-        <td><% if(typeof bill.action_date !== 'undefined'){ %><%= bill.action_date.getDate() %>/<% if(bill.action_date.getMonth() + 1  < 10){ %>0<%}%><%= bill.action_date.getMonth() + 1 %>/<%= bill.action_date.getFullYear() %><% } %></td>
-        <td><% if(typeof bill.payment_date !== 'undefined'){ %><%= bill.payment_date.getDate() %>/<% if(bill.payment_date.getMonth() + 1  < 10){ %>0<%}%><%= bill.payment_date.getMonth() + 1 %>/<%= bill.payment_date.getFullYear() %><% } %></td>
-        <td><% if(typeof bill.recovery_date !== 'undefined'){ %><%= bill.recovery_date.getDate() %>/<% if(bill.recovery_date.getMonth() + 1  < 10){ %>0<%}%><%= bill.recovery_date.getMonth() + 1 %>/<%= bill.recovery_date.getFullYear() %><% } %></td>
-        <td>
-            <% if(typeof bill.customer != 'undefined'){ %>
-            <button onclick="getContact('<%= bill.customer._id %>')" type="button" class="btn btn-primary" data-toggle="modal" data-target="#contactModal">
-                Voir
-            </button>
-            <% } %>
-            <% if(typeof bill.provider != 'undefined'){ %>
-            <button onclick="getContact('<%= bill.provider._id %>')" type="button" class="btn btn-primary" data-toggle="modal" data-target="#contactModal">
-                Voir
-            </button>
-            <% } %>
-        </td>
-    </tr>
-    <% }); %>
-    </tbody>
-</table>
+<div clas="container"><a class="btn btn-primary" href="/bill">Add Bills</a></div>
+<%- include partials/recap.ejs %>
+  
+<div id="yearChanger" class="row">
+    <div class="col-1 prec-block">
+        <a id="prec" onclick="precYear()"><</a>
+    </div>
+        <table class="table table-hover table-dark col-10">
+            <thead class="thead-light">
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Désignation</th>
+                <th scope="col">Montant</th>
+                <th scope="col">Date de prestation</th>
+                <th scope="col">Date de facturation</th>
+                <th scope="col">Date de règlement</th>
+                <th scope="col">Date de relance</th>
+                <th scope="col">Contact</th>
+            </tr>
+            </thead>
+            <tbody>
+            <% bills.forEach((bill, key) => { %>
+            <tr>
+                <td><%= key %></td>
+                <td><%= bill.designation %></td>
+                <td><%= bill.amount %> €</td>
+                <td><% if(typeof bill.action_date !== 'undefined'){ %><%= bill.action_date.getDate() %>/<% if(bill.action_date.getMonth() + 1  < 10){ %>0<%}%><%= bill.action_date.getMonth() + 1 %>/<%= bill.action_date.getFullYear() %><% } %></td>
+                      <td><% if(typeof bill.billing_date !== 'undefined'){ %><%= bill.billing_date.getDate() %>/<% if(bill.billing_date.getMonth() + 1  < 10){ %>0<%}%><%= bill.billing_date.getMonth() + 1 %>/<%= bill.billing_date.getFullYear() %><% } %></td>
 
-<div class="modal fade" id="contactModal" tabindex="-1" role="dialog" aria-labelledby="contactModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+                <td><% if(typeof bill.payment_date !== 'undefined'){ %><%= bill.payment_date.getDate() %>/<% if(bill.payment_date.getMonth() + 1  < 10){ %>0<%}%><%= bill.payment_date.getMonth() + 1 %>/<%= bill.payment_date.getFullYear() %><% } %></td>
+                <td><% if(typeof bill.recovery_date !== 'undefined'){ %><%= bill.recovery_date.getDate() %>/<% if(bill.recovery_date.getMonth() + 1  < 10){ %>0<%}%><%= bill.recovery_date.getMonth() + 1 %>/<%= bill.recovery_date.getFullYear() %><% } %></td>
+                <td>
+                    <% if(typeof bill.customer != 'undefined'){ %>
+                    <button onclick="getContact('<%= bill.customer._id %>')" type="button" class="btn btn-primary" data-toggle="modal" data-target="#contactModal">
+                        Voir
+                    </button>
+                    <% } %>
+                    <% if(typeof bill.provider != 'undefined'){ %>
+                    <button onclick="getContact('<%= bill.provider._id %>')" type="button" class="btn btn-primary" data-toggle="modal" data-target="#contactModal">
+                        Voir
+                    </button>
+                    <% } %>
+                </td>
+            </tr>
+            <% }); %>
+            </tbody>
+        </table>
+    <div class="col-1 next-block">
+        <a id="next" onclick="nextYear()">></a>
+    </div>
+</div>
+
+<div class="modal fade bd-example-modal-lg" id="contactModal" tabindex="-1" role="dialog" aria-labelledby="contactModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="modalLabel"></h5>
@@ -49,52 +62,247 @@
                 </button>
             </div>
             <div class="modal-body" id="contact">
-                <table class="table table-hover table-dark">
-                    <thead class="thead-light">
-                        <th scope="col">Nom</th>
-                        <th scope="col">Tél</th>
-                        <th scope="cop">Mobile</th>
-                        <th scope="col">Mail</th>
-                        <th scope="col">Commentaires</th>
-                    </thead>
-                    <tbody id="billContacts">
-
-                    </tbody>
-                </table>
+                <div class="d-flex flex-row">
+                    <div class="mr-auto p-5" style="padding: 10px;">
+                        <p id="address"></p>
+                        <p id="cp"></p>
+                        <p id="city"></p>
+                    </div>
+                    <div class="p-5 align-self-stretch" style="padding: 10px;">
+                        <p id="country"></p>
+                    </div>
+                </div>
+                <form id="addContact">
+                    <table class="table table-hover table-dark">
+                        <thead class="thead-light">
+                            <th scope="col">Nom</th>
+                            <th scope="col">Tél</th>
+                            <th scope="col">Mobile</th>
+                            <th scope="col">Mail</th>
+                            <th scope="col">Commentaires</th>
+                            <th scope="col">Action</th>
+                        </thead>
+                        <tbody id="billContacts">
+                        </tbody>
+                    </table>
+                </form>
+                <button type="button" id="addContactForm" class="btn btn-success" onclick="createForm('billContacts', fields)">Ajouter un contact</button>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
             </div>
         </div>
     </div>
 </div>
 
 <script>
+    let company = null;
+    const fields = [
+        {
+            "type": "input",
+            "label": "Nom",
+            "required": true,
+        },
+        {
+            "type": "input",
+            "label": "Tél",
+            "required": false,
+        },
+        {
+            "type": "input",
+            "label": "Mobile",
+            "required": false,
+        },
+        {
+            "type": "input",
+            "label": "Mail",
+            "required": true,
+        },
+        {
+            "type": "input",
+            "label": "Commentaires",
+            "required": false,
+        },
+    ];
+
     function getContact(id){
         $.get('/customer/' + id, false, callback, 'json');
     }
 
     function callback(data){
-        console.log(data);
-        $('#modalLabel').textContent = data.name;
         if(typeof data !== 'undefined' && data !== null) {
+            company = data;
+            document.getElementById('modalLabel').innerHTML = setUndefined(data.name);
+            document.getElementById('address').innerHTML = setUndefined(data.address.road);
+            document.getElementById('cp').innerHTML = setUndefined(data.address.zip);
+            document.getElementById('city').innerHTML = setUndefined(data.address.city);
+            document.getElementById('country').innerHTML = setUndefined(data.address.country);
             let billContacts = "";
             if(typeof data.contacts !== 'undefined') {
                 data.contacts.forEach((contact, key) => {
-                    billContacts =
+                    billContacts +=
                         "<tbody><tr>" +
-                        "<td>" + contact.name + "</td>" +
-                        "<td>" + contact.tel + "</td>" +
-                        "<td>" + contact.mobile + "</td>" +
-                        "<td>" + contact.mail + "</td>" +
-                        "<td>" + contact.comments + "</td>" +
+                        "<td>" + setUndefined(contact.name) + "</td>" +
+                        "<td>" + setUndefined(contact.tel) + "</td>" +
+                        "<td>" + setUndefined(contact.port) + "</td>" +
+                        "<td>" + setUndefined(contact.mail) + "</td>" +
+                        "<td>" + setUndefined(contact.comments) + "</td>" +
+                        "<td>...</td>" +
                         "</tr></tbody>";
                 });
-                $('#billContacts').innerHTML = billContacts;
+                document.getElementById('billContacts').innerHTML = billContacts;
             } else {
-                $('#billContacts').innerHTML = "<h3>Aucun contact n'a été renseigné.</h3>";
+                document.getElementById('billContacts').innerHTML = "<h3>Aucun contact n'a été renseigné.</h3>";
             }
+        }
+    }
+
+    function setUndefined(value){
+        if(typeof value === 'undefined' || value === null || value === ""){
+            value = "-";
+        }
+        return value;
+    }
+
+    function createForm(elementId, arrayField){
+        document.getElementById('addContactForm').setAttribute("disabled", "");
+        let tr = document.getElementById(elementId).appendChild(document.createElement('tr'));
+        arrayField.forEach((field, key)=>{
+            let td = document.createElement('td');
+            tr.appendChild(td);
+            let formGroup = document.createElement('div');
+            formGroup.setAttribute("class", "form-group");
+            td.appendChild(formGroup);
+            let f = formGroup.appendChild(document.createElement('input'));
+            f.setAttribute("placeholder", field.label);
+            f.setAttribute("type", field.type);
+            f.setAttribute("class", "form-control");
+            f.setAttribute("name", "field-" + key);
+            if(field.required){
+                f.required = true;
+            }
+        });
+        let td = document.createElement('td');
+        tr.appendChild(td);
+        let formGroup = document.createElement('div');
+        formGroup.setAttribute("class", "form-group");
+        td.appendChild(formGroup);
+        let submit = formGroup.appendChild(document.createElement("button"));
+        submit.setAttribute("type", "button");
+        submit.setAttribute("class", "btn btn-success");
+        submit.setAttribute("name", "save");
+        submit.innerText = "Ajouter";
+        submit.setAttribute("onclick", "addContact()");
+    }
+
+    function addContact(){
+        document.getElementById('addContactForm').removeAttribute("disabled");
+        let data = $('#addContact').serializeArray();
+        let contact = {
+            name: data[0].value,
+            tel: data[1].value,
+            port: data[2].value,
+            mail: data[3].value,
+            comments: data[4].value,
+        };
+        if(company.contacts == null){
+            company.contacts = [];
+        }
+        company.contacts.push(contact);
+        let path;
+        if(document.title === "Factures entrantes"){
+            path = '/update_provider';
+        }
+        if(document.title === "Factures sortantes"){
+            path = '/update_customer';
+        } else {
+            return;
+        }
+        $.ajax({
+            type: 'PUT',
+            contentType: 'application/json',
+            url: path,
+            data: JSON.stringify(company),
+            success: (result)=>{
+                getContact(result._id);
+            },
+            error: (err)=>{
+                console.log(err);
+            }
+        });
+    }
+
+    function nextYear(){
+        let url = location.href;
+        let stringParams = url.split("?");
+        console.log(stringParams);
+        if(stringParams[1]){
+            let params = stringParams[1].split("&");
+            let hasYear = false;
+            for(var i = 0;i<params.length;i++){
+                if(params[i].match(/.*year=.*/)){
+                    hasYear = true;
+                    let param = params[i].split("=");
+                    param[1]++;
+                    param = param.join("=");
+                    params[i] = param;
+                    break;
+                }
+            }
+            if(hasYear) {
+                params = params.join("&");
+                stringParams[1] = params;
+                window.location.href = stringParams.join("?");
+            } else {
+                let year = new Date();
+                year = year.getFullYear() + 1;
+                params[params.length] = "year="+year;
+                params = params.join("&");
+                stringParams[1] = params;
+                window.location.href = stringParams.join("?");
+            }
+        } else {
+            let year = new Date();
+            year = year.getFullYear() + 1;
+            stringParams[1] = "year="+year;
+            window.location.href = stringParams.join("?");
+        }
+    }
+
+    function precYear(){
+        let url = location.href;
+        let stringParams = url.split("?");
+        console.log(stringParams);
+        if(stringParams[1]){
+            let params = stringParams[1].split("&");
+            let hasYear = false;
+            for(var i = 0;i<params.length;i++){
+                if(params[i].match(/.*year=.*/)){
+                    hasYear = true;
+                    let param = params[i].split("=");
+                    param[1]--;
+                    param = param.join("=");
+                    params[i] = param;
+                    break;
+                }
+            }
+            if(hasYear) {
+                params = params.join("&");
+                stringParams[1] = params;
+                window.location.href = stringParams.join("?");
+            } else {
+                let year = new Date();
+                year = year.getFullYear() - 1;
+                params[params.length] = "year="+year;
+                params = params.join("&");
+                stringParams[1] = params;
+                window.location.href = stringParams.join("?");
+            }
+        } else {
+            let year = new Date();
+            year = year.getFullYear() - 1;
+            stringParams[1] = "year="+year;
+            window.location.href = stringParams.join("?");
         }
     }
 </script>

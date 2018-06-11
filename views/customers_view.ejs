@@ -1,11 +1,7 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-</head>
-<body>
+<%- include partials/head.ejs %>
+<%- include partials/header.ejs %>
+<div clas="container"><a class="btn btn-primary" href="/add_customer">Add Customer</a></div>
 <ul>
     <% for (customer of customers) { %><li><%= customer.name %></li><% } %>
 </ul>
-</body>
-</html>
+<%- include partials/footer.ejs %>

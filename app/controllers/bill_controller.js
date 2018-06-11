@@ -5,75 +5,62 @@ const errorHandler = require('../error_management');
 
 let currentDate = new Date();
 let currentYear = currentDate.getFullYear();
-
-function updateBill(req, res) {
-    var val = verifyValues(req);
-    if(!val) {
-        services.updateBill(req, res);
-        console.log('update bill');
-    }
-    else {
-        console.log(val);
-    }
-}
+let recap = {};
+let range;
 
 function listInBill(req, res) {
-    
-    if(typeof req.get("year") !== 'undefined' && req.get("year") !== "" && req.get("year") !== null){
-        services.recapInBills(req.get("year"));
-        services.listInBill(req.get("year")).then((bills)=>{
-            res.render('bills_view', {bills:bills});
+    if(typeof req.query.year !== 'undefined' && req.query.year !== "" && req.query.year !== null) range = req.query.year;
+    else range = currentYear;
+    recap = services.recapInBills(range).then((data)=>{
+        recap = data;
+        console.log('recapIn: '+JSON.stringify(recap));
+        
+        services.listInBill(range).then((bills)=>{
+            res.render('bills_view', {title:"Factures entrantes",bills:bills, recap: recap});
         });
-    } else {
-        services.recapInBills(currentYear);
-        services.listInBill(currentYear).then((bills)=>{
-            res.render('bills_view', {bills:bills});
-        });
-    }
+    });
 }
 
 function listOutBill(req, res) {
-    if(typeof req.get("year") !== 'undefined' && req.get("year") !== "" && req.get("year") !== null){
-        services.listOutBill(req.get("year")).then((bills)=>{
-            res.render(res, 'bills_view', {bills:bills});
-        });
-    } else {
-        services.listOutBill(currentYear).then((bills)=>{
-            res.render('bills_view', {bills:bills});
-        });
-    }
+    if(typeof req.query.year !== 'undefined' && req.query.year !== "" &&
+        req.query.year !== null) range = req.query.year;
+    else range = currentYear;
+    services.recapOutBills(range).then((data)=>{
+        console.log(data);
+        if(data.length > 0) {
+            console.log(data[0].vat_amount);
+            recap.tva = data[0].vat_amount;
+            recap.total = data[0].totalAmount;
+            recap.count = data[0].count;
+            recap.year = data[0].year;
+            recap.day = data[0].day_number;
+            recap.payed = data[0].payed;
+            recap.due = data[0].due;
+            recap.todo = data[0].todo;
+            console.log('recapOut: ' + JSON.stringify(recap));
+            services.listOutBill(range).then((bills) => {
+                res.render('bills_view', {title: "Factures sortantes", bills: bills, recap: recap});
+            });
+        } else {
+            services.listOutBill(range).then((bills) => {
+                res.render('bills_view', {title: "Factures sortantes", bills: bills});
+            });
+        }
+    });
+    
+    
 }
 
 /*
     montre le formulaire d'ajout d'une facture
-    
-    var query = Band.findOne({name: "Guns N' Roses"});
-    assert.ok(!(query instanceof Promise));
-
-    // A query is not a fully-fledged promise, but it does have a `.then()`.
-    query.then(function (doc) {
-      // use doc
-    });
-
-    // `.exec()` gives you a fully-fledged promise
-    var promise = query.exec();
-    assert.ok(promise instanceof Promise);
-
-    promise.then(function (doc) {
-      // use doc
-    });
 */
 function addBill(req,res){
     providerService.providerSelect().exec().then((providers)=>{
         customerService.customerSelect().exec().then( (customers)=>{
             console.log('providers: '+providers+'; customers: '+customers);
             res.render('bill_add',{customers: customers, providers: providers, title:'Ajout d\'une facture'});
-        })
+        });
     });        
-    //    console.log('providers: '+providers);
-        
-      //      console.log('customers: '+customers);
-             /*res.render('bill_add',{customers: customers, providers: providers, title:'Ajout d\'une facture'})*/
 }
 
 function processAddBill(req, res) { 
@@ -89,7 +76,6 @@ function processAddBill(req, res) {
     if (params.billing_date) params.billing_date = new Date(params.billing_date);
     if (params.recovery_date) params.recovery_date = new Date(params.recovery_date);
     if (params.payment_date) params.payment_date = new Date(params.payment_date); 
-    
     if (params.amount) params.amount = parseInt(params.amount);
     if (params.vat) params.vat = parseInt(params.vat);
 
@@ -113,12 +99,46 @@ function processAddBill(req, res) {
             if (err) return res.send(err);
             res.render('bills_view', {bills:bill})});
     }
+    services.processAddBill(params).then((err,bill)=>{
+        if (err) return res.send(err);
+        console.log(bill); 
+        res.render('bills_view',{bills:bill});
+    });
+}
+
+function updateBill(req,res){
+    services.billSelect().exec().then((bills) => {
+        providerService.providerSelect().exec().then((providers)=>{
+            customerService.customerSelect().exec().then( (customers)=>{
+                res.render('bill_update',{bill:0, bill_id: req.params.id, bills: bills, customers: customers, providers: providers, title:'Edition d\'une facture'});
+            });
+        });
+    });
+}
+
+function updateOneBill(req,res){
+    services.findOneBill(req.params.id).exec().then((bill) => {
+        console.log('bill: ' +bill);
+        res.send({bill: bill});
+    });
+}
+
+function processUpdateBill(req, res) {
+        let params = req.body;
+        console.log(req.body);
+        services.processUpdateBill(params).then((err, bill) => {
+            if (err) return res.send(err);
+            console.log(bill); 
+            res.render('bills_view',{title:'updateBill',bills:bill});
+        });
 }
     
 module.exports = {
     listInBill: listInBill,
+    listOutBill: listOutBill,
     addBill: addBill,
     processAddBill: processAddBill,
-    listOutBill: listOutBill,
-    updateBill: updateBill
+    updateBill: updateBill,
+    updateOneBill: updateOneBill,
+    processUpdateBill: processUpdateBill
 };

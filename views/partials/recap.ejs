@@ -1,0 +1,30 @@
+<% if (title) { %>
+    
+    <% if (title == 'Factures entrantes'){ %> 
+        <div><h4>DUMMY DATA</h4>
+        <p>TVA: 10</p>
+        <p>Charges prévisionnelles: 100000</p>
+        <p>Réglé: 50000</p>
+        <p>A régler: 25000</p></div>
+    <% } else { %>
+        <% if (typeof recap !== 'undefined') { %>
+        <% if (recap.total){ %>
+        <div>
+            <table class="table table-bordered">
+            <!--p>Nombre de jours : <-%= recap.nbjours %-></p-->
+                <tr><td>TVA </td><td> <%= recap.tva %></td></tr>
+                <tr><td>Nombres de jours </td><td><%= recap.day_number %></td></tr>
+                <tr><td>CA prévisionnel </td><td> <%= recap.total %> €</td></tr>
+                <tr><td>Encours </td><td> <%= recap.due %> €</td></tr>
+                <tr><td>Réglé </td><td> <%= recap.payed %> €</td></tr>
+                <tr><td>A réaliser </td><td> <%= recap.todo %> €</td></tr>
+            </table>
+        </div>
+        <% } else { %> <div><h4>DUMMY DATA</h4>
+            <p>Nombre de jours : 50</p>
+            <p>TVA: 10</p>
+            <p>CA prévisionnel: 100000</p>
+            <p>Encours: 25000</p>
+            <p>Réglé: 50000</p>
+            <p>A réaliser: 25000</p></div>
+<% } } } } %>
