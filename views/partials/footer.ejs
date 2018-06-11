@@ -1,5 +1,44 @@
         </div>
+        </div>
         <footer>
+            <div class="footer">
+                <div class="skew"></div>
+                <div class="copyright">Copyright © 2018 Node Bean</div>
+            </div>
         </footer>
+        <script>
+
+            $('#content, .title-app').hide();
+            setTimeout(function () {
+                $('#content').show();
+                $('#chargement').hide();
+                $('.title-app').show().addClass('animated fadeInDown');
+            }, 1000);
+
+            //Haut, haut, bas, bas, gauche, droite, gauche, droite, B, A
+            var k = [38, 38, 40, 40, 37, 39, 37, 39, 66, 65],
+                n = 0;
+            $(document).keydown(function (e) {
+                if (e.keyCode === k[n++]) {
+                    if (n === k.length) {
+                        $('body').addClass('konami');
+                        n = 0;
+                        return false;
+                    }
+                }
+                else {
+                    n = 0;
+                }
+            });
+
+            $('.switch').change(function () {
+                $(this).toggleClass('checked');
+                if ($(this).hasClass('checked')) {
+                    $('body').addClass('dark');
+                } else {
+                    $('body').removeClass('dark');
+                }
+            });
+        </script>
     </body>
 </html>
