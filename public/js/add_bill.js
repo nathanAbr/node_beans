@@ -43,9 +43,13 @@ $(() => {
       billing_date: $("#billing_date").val(),
       payment_date: $("#payment_date").val()
     }; 
-    let recursif = $("#recursif").is(':checked');
-    console.log(recursif);
 
+    let recursif = $("#recursif").is(':checked');
+    
+    if ($("#customerChoice").val() != "") {
+      data.customer = $("#customerChoice").val();
+    }
+	/*
     /*if($("#designation").val()==""){
       console.log("ERREUR PROFESSEUR!");
       $("#alerte").append("La balise désignation est vide</br>");
@@ -67,22 +71,15 @@ $(() => {
     }
     else{
       
-    }
-*/
-    if ($("#customerChoice").val() != "") {
-      data.customer = $("#customerChoice").val();
-      console.log(data.customer);
-    }
+    }*/
 
     if($("#providerChoice").val() != ""){
-      console.log(data.provider);
       data.provider = $("#providerChoice").val();
     }
     
-   $.post("/bill", {recursif: recursif, data: data}, function(data, status) {
+   $.post("/bill", {recursif:recursif, data: JSON.stringify(data)}, function(data, status) {
       console.log("Data: " + data + "\nStatus: " + status);
     });
-
   });
 });
 

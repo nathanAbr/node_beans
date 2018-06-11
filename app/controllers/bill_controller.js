@@ -76,33 +76,43 @@ function addBill(req,res){
              /*res.render('bill_add',{customers: customers, providers: providers, title:'Ajout d\'une facture'})*/
 }
 
-function processAddBill(req, res) {    
-    let params = req.body.data;
-    let recursif = req.body.recursif;
-    if(recursif = true){
-        var compteur = 0;
-        var dateFirstBill =  $("#billing_date").val();
-        var monthFirstBill = dateFirstBill.getMonth();
-        while(compteur <25){
-            monthFirstBill++;
-
-            if(monthFirstBill = 12){
-                
-          }
-  
-        }
-      }
+function processAddBill(req, res) { 
     
-   console.log('params: '+JSON.stringify(params));
+    let isRecursif = req.body.recursif;
+    let params = req.body;
+    params = JSON.parse(params.data);
+    
+    console.log(req.body.recursif);
+    //let isRecursif = res.body.recursif;
+    
     if (params.action_date) params.action_date = new Date(params.action_date);
     if (params.billing_date) params.billing_date = new Date(params.billing_date);
     if (params.recovery_date) params.recovery_date = new Date(params.recovery_date);
     if (params.payment_date) params.payment_date = new Date(params.payment_date); 
     
-    services.processAddBill(params).then((err,bill)=>{
-        if (err) return res.send(err);
-        console.log(bill); 
-        res.render('bills_view',{bills:bill})});
+    if (params.amount) params.amount = parseInt(params.amount);
+    if (params.vat) params.vat = parseInt(params.vat);
+
+    if(isRecursif == 'true'){
+        let paramsArray = [];
+        let newBill = Object.assign({}, params);
+        newBill.billing_date = new Date(params.billing_date);
+        
+        paramsArray.push(newBill);
+        for(let i = 0; i < 23; ++i){
+            newBill = Object.assign({}, params);
+            newBill.billing_date = new Date(params.billing_date.setMonth(params.billing_date.getMonth()+1));
+            paramsArray.push(newBill);
+        }
+        services.processAddBillRecursive(paramsArray).then((err,bill)=>{
+            if (err) return res.send(err);
+            res.render('bills_view', {bills:bill})});
+    } 
+    else{
+        services.processAddBill(params).then((err,bill)=>{
+            if (err) return res.send(err);
+            res.render('bills_view', {bills:bill})});
+    }
 }
     
 module.exports = {

@@ -49,7 +49,12 @@ function listOutBill(year) {
 // Create a bill
 function processAddBill(params){
     let bill = new Bill(params);
-	return bill.save();
+    return bill.save();
+}
+
+function processAddBillRecursive(params){
+    let bills = params.map((billParam) => new Bill(billParam));
+    return Bill.insertMany(bills);
 }
 
 function recapInBills(){
@@ -72,6 +77,7 @@ function recapOutBills(){
 module.exports = {
     listInBill: listInBill,
     processAddBill : processAddBill,
+    processAddBillRecursive : processAddBillRecursive,
     listOutBill: listOutBill,
     updateBill : updateBill,
     recapInBills: recapInBills,
