@@ -1,17 +1,23 @@
-<% if (title) { %>
-    
-    <% if (title == 'Factures entrantes'){ %> 
+<button class="btn btn-warning" type="button" data-toggle="collapse" data-target="#collapse" aria-expanded="false" aria-controls="collapse">
+    Détails
+</button>
+
+<div class="collapse" id="collapse">
+    <div class="card card-body">
+        <% if (title) { %>
+
+        <% if (title == 'Factures entrantes'){ %>
         <div><h4>DUMMY DATA</h4>
-        <p>TVA: 10</p>
-        <p>Charges prévisionnelles: 100000</p>
-        <p>Réglé: 50000</p>
-        <p>A régler: 25000</p></div>
-    <% } else { %>
+            <p>TVA: 10</p>
+            <p>Charges prévisionnelles: 100000</p>
+            <p>Réglé: 50000</p>
+            <p>A régler: 25000</p></div>
+        <% } else { %>
         <% if (typeof recap !== 'undefined') { %>
         <% if (recap.total){ %>
         <div>
             <table class="table table-bordered">
-            <!--p>Nombre de jours : <-%= recap.nbjours %-></p-->
+                <!--p>Nombre de jours : <-%= recap.nbjours %-></p-->
                 <tr><td>TVA </td><td> <%= recap.tva %></td></tr>
                 <tr><td>Nombres de jours </td><td><%= recap.day_number %></td></tr>
                 <tr><td>CA prévisionnel </td><td> <%= recap.total %> €</td></tr>
@@ -21,10 +27,12 @@
             </table>
         </div>
         <% } else { %> <div><h4>DUMMY DATA</h4>
-            <p>Nombre de jours : 50</p>
-            <p>TVA: 10</p>
-            <p>CA prévisionnel: 100000</p>
-            <p>Encours: 25000</p>
-            <p>Réglé: 50000</p>
-            <p>A réaliser: 25000</p></div>
-<% } } } } %>
+        <p>Nombre de jours : 50</p>
+        <p>TVA: 10</p>
+        <p>CA prévisionnel: 100000</p>
+        <p>Encours: 25000</p>
+        <p>Réglé: 50000</p>
+        <p>A réaliser: 25000</p></div>
+        <% } } } } %>
+    </div>
+</div>
