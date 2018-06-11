@@ -4,11 +4,14 @@
 <%- include partials/recap.ejs %>
 <div class="data-table">
     <div id="yearChanger" class="row">
-        <div class="col-6 prec-block">
+        <div class="col-4 prec-block">
             <a id="prec" onclick="precYear()"><</a>
             <h4 id="yearLess"></h4>
         </div>
-        <div class="col-6 next-block">
+        <div class="col-4 text-center">
+            <h3 id="year"></h3>
+        </div>
+        <div class="col-4 next-block">
             <a id="next" onclick="nextYear()">></a>
             <h4 id="yearMore"></h4>
         </div>
@@ -103,7 +106,29 @@
                 "url": "https://cdn.datatables.net/plug-ins/1.10.16/i18n/French.json"
             }
         });
+
+        let url = location.href;
+        let stringParams = url.split("?");
+        if(stringParams[1]){
+            let params = stringParams[1].split("&");
+            let hasYear = false;
+            for(var i = 0;i<params.length;i++){
+                if(params[i].match(/.*year=.*/)){
+                    hasYear = true;
+                    let param = params[i].split("=");
+                    document.getElementById("year").innerText = param[1];
+                    break;
+                }
+            }
+            if(!hasYear) {
+                document.getElementById("year").innerText = (new Date()).getFullYear().toString();
+            }
+        } else {
+            document.getElementById("year").innerText = (new Date()).getFullYear().toString();
+        }
+
     });
+
     let company = null;
     const fields = [
         {
@@ -280,7 +305,6 @@
     function precYear(){
         let url = location.href;
         let stringParams = url.split("?");
-        console.log(stringParams);
         if(stringParams[1]){
             let params = stringParams[1].split("&");
             let hasYear = false;
