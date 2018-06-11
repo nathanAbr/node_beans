@@ -1,50 +1,54 @@
 <%- include partials/head.ejs %>
 <%- include partials/header.ejs %>
 <%- include partials/recap.ejs %>
-<div id="yearChanger" class="row">
-    <div class="col-1 prec-block">
-        <a id="prec" onclick="precYear()"><</a>
+<div class="container data-table">
+    <div id="yearChanger" class="row">
+        <div class="col-6 prec-block">
+            <a id="prec" onclick="precYear()"><</a>
+            <h4 id="yearLess"></h4>
+        </div>
+        <div class="col-6 next-block">
+            <a id="next" onclick="nextYear()">></a>
+            <h4 id="yearMore"></h4>
+        </div>
     </div>
-        <table class="table table-hover table-dark col-10">
-            <thead class="thead-light">
-            <tr>
-                <th scope="col">#</th>
-                <th scope="col">Désignation</th>
-                <th scope="col">Montant</th>
-                <th scope="col">Date de prestation</th>
-                <th scope="col">Date de règlement</th>
-                <th scope="col">Date de relance</th>
-                <th scope="col">Contact</th>
-            </tr>
-            </thead>
-            <tbody>
-            <% bills.forEach((bill, key) => { %>
-            <tr>
-                <td><%= key %></td>
-                <td><%= bill.designation %></td>
-                <td><%= bill.amount %> €</td>
-                <td><% if(typeof bill.action_date !== 'undefined'){ %><%= bill.action_date.getDate() %>/<% if(bill.action_date.getMonth() + 1  < 10){ %>0<%}%><%= bill.action_date.getMonth() + 1 %>/<%= bill.action_date.getFullYear() %><% } %></td>
-                <td><% if(typeof bill.payment_date !== 'undefined'){ %><%= bill.payment_date.getDate() %>/<% if(bill.payment_date.getMonth() + 1  < 10){ %>0<%}%><%= bill.payment_date.getMonth() + 1 %>/<%= bill.payment_date.getFullYear() %><% } %></td>
-                <td><% if(typeof bill.recovery_date !== 'undefined'){ %><%= bill.recovery_date.getDate() %>/<% if(bill.recovery_date.getMonth() + 1  < 10){ %>0<%}%><%= bill.recovery_date.getMonth() + 1 %>/<%= bill.recovery_date.getFullYear() %><% } %></td>
-                <td>
-                    <% if(typeof bill.customer != 'undefined'){ %>
-                    <button onclick="getContact('<%= bill.customer._id %>')" type="button" class="btn btn-primary" data-toggle="modal" data-target="#contactModal">
-                        Voir
-                    </button>
-                    <% } %>
-                    <% if(typeof bill.provider != 'undefined'){ %>
-                    <button onclick="getContact('<%= bill.provider._id %>')" type="button" class="btn btn-primary" data-toggle="modal" data-target="#contactModal">
-                        Voir
-                    </button>
-                    <% } %>
-                </td>
-            </tr>
-            <% }); %>
-            </tbody>
-        </table>
-    <div class="col-1 next-block">
-        <a id="next" onclick="nextYear()">></a>
-    </div>
+    <table id="data-table" class="table table-hover table-dark">
+        <thead class="thead-light">
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Désignation</th>
+            <th scope="col">Montant</th>
+            <th scope="col">Date de prestation</th>
+            <th scope="col">Date de règlement</th>
+            <th scope="col">Date de relance</th>
+            <th scope="col">Contact</th>
+        </tr>
+        </thead>
+        <tbody>
+        <% bills.forEach((bill, key) => { %>
+        <tr>
+            <td><%= key %></td>
+            <td><%= bill.designation %></td>
+            <td><%= bill.amount %> €</td>
+            <td><% if(typeof bill.action_date !== 'undefined'){ %><%= bill.action_date.getDate() %>/<% if(bill.action_date.getMonth() + 1  < 10){ %>0<%}%><%= bill.action_date.getMonth() + 1 %>/<%= bill.action_date.getFullYear() %><% } %></td>
+            <td><% if(typeof bill.payment_date !== 'undefined'){ %><%= bill.payment_date.getDate() %>/<% if(bill.payment_date.getMonth() + 1  < 10){ %>0<%}%><%= bill.payment_date.getMonth() + 1 %>/<%= bill.payment_date.getFullYear() %><% } %></td>
+            <td><% if(typeof bill.recovery_date !== 'undefined'){ %><%= bill.recovery_date.getDate() %>/<% if(bill.recovery_date.getMonth() + 1  < 10){ %>0<%}%><%= bill.recovery_date.getMonth() + 1 %>/<%= bill.recovery_date.getFullYear() %><% } %></td>
+            <td>
+                <% if(typeof bill.customer != 'undefined'){ %>
+                <button onclick="getContact('<%= bill.customer._id %>')" type="button" class="btn btn-primary" data-toggle="modal" data-target="#contactModal">
+                    Voir
+                </button>
+                <% } %>
+                <% if(typeof bill.provider != 'undefined'){ %>
+                <button onclick="getContact('<%= bill.provider._id %>')" type="button" class="btn btn-primary" data-toggle="modal" data-target="#contactModal">
+                    Voir
+                </button>
+                <% } %>
+            </td>
+        </tr>
+        <% }); %>
+        </tbody>
+    </table>
 </div>
 
 <div class="modal fade bd-example-modal-lg" id="contactModal" tabindex="-1" role="dialog" aria-labelledby="contactModalLabel" aria-hidden="true">
@@ -91,6 +95,14 @@
 </div>
 
 <script>
+    $(document).ready(()=>{
+        $('#data-table').DataTable({
+            responsive: true,
+            "language": {
+                "url": "https://cdn.datatables.net/plug-ins/1.10.16/i18n/French.json"
+            }
+        });
+    });
     let company = null;
     const fields = [
         {
